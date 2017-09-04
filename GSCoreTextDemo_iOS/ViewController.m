@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "GSCoreText.h"
 
 @interface ViewController ()
 

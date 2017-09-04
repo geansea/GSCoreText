@@ -20,6 +20,10 @@
 		29F5BE2E1F401FBD000D2AA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29F5BE2C1F401FBD000D2AA0 /* Main.storyboard */; };
 		29F5BE351F401FEA000D2AA0 /* GSCTTypesetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F5BE341F401FEA000D2AA0 /* GSCTTypesetter.m */; };
 		29F5BE361F401FEA000D2AA0 /* GSCTTypesetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F5BE341F401FEA000D2AA0 /* GSCTTypesetter.m */; };
+		932827761F500EA1005CFC7F /* GSGlyph.m in Sources */ = {isa = PBXBuildFile; fileRef = 932827751F500EA1005CFC7F /* GSGlyph.m */; };
+		932827771F500EA1005CFC7F /* GSGlyph.m in Sources */ = {isa = PBXBuildFile; fileRef = 932827751F500EA1005CFC7F /* GSGlyph.m */; };
+		9328278C1F5CFD2A005CFC7F /* GSCTLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 9328278B1F5CFD2A005CFC7F /* GSCTLine.m */; };
+		9328278D1F5CFD2B005CFC7F /* GSCTLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 9328278B1F5CFD2A005CFC7F /* GSCTLine.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +50,10 @@
 		29F5BE2F1F401FBD000D2AA0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		29F5BE331F401FEA000D2AA0 /* GSCTTypesetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GSCTTypesetter.h; path = GSCoreText/Core/GSCTTypesetter.h; sourceTree = "<group>"; };
 		29F5BE341F401FEA000D2AA0 /* GSCTTypesetter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GSCTTypesetter.m; path = GSCoreText/Core/GSCTTypesetter.m; sourceTree = "<group>"; };
+		932827741F500EA1005CFC7F /* GSGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GSGlyph.h; path = GSCoreText/Core/GSGlyph.h; sourceTree = "<group>"; };
+		932827751F500EA1005CFC7F /* GSGlyph.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GSGlyph.m; path = GSCoreText/Core/GSGlyph.m; sourceTree = "<group>"; };
+		9328278A1F5CFD2A005CFC7F /* GSCTLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GSCTLine.h; path = GSCoreText/Core/GSCTLine.h; sourceTree = "<group>"; };
+		9328278B1F5CFD2A005CFC7F /* GSCTLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GSCTLine.m; path = GSCoreText/Core/GSCTLine.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +99,10 @@
 			children = (
 				29F5BE331F401FEA000D2AA0 /* GSCTTypesetter.h */,
 				29F5BE341F401FEA000D2AA0 /* GSCTTypesetter.m */,
+				9328278A1F5CFD2A005CFC7F /* GSCTLine.h */,
+				9328278B1F5CFD2A005CFC7F /* GSCTLine.m */,
+				932827741F500EA1005CFC7F /* GSGlyph.h */,
+				932827751F500EA1005CFC7F /* GSGlyph.m */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -252,6 +264,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9328278C1F5CFD2A005CFC7F /* GSCTLine.m in Sources */,
+				932827761F500EA1005CFC7F /* GSGlyph.m in Sources */,
 				29F5BE0E1F401FA7000D2AA0 /* ViewController.m in Sources */,
 				29F5BE351F401FEA000D2AA0 /* GSCTTypesetter.m in Sources */,
 				29F5BE0B1F401FA7000D2AA0 /* AppDelegate.m in Sources */,
@@ -263,6 +277,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9328278D1F5CFD2B005CFC7F /* GSCTLine.m in Sources */,
+				932827771F500EA1005CFC7F /* GSGlyph.m in Sources */,
 				29F5BE291F401FBD000D2AA0 /* ViewController.m in Sources */,
 				29F5BE361F401FEA000D2AA0 /* GSCTTypesetter.m in Sources */,
 				29F5BE261F401FBD000D2AA0 /* main.m in Sources */,
@@ -534,6 +550,7 @@
 				29F5BE1A1F401FA7000D2AA0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		29F5BE301F401FBD000D2AA0 /* Build configuration list for PBXNativeTarget "GSCoreTextDemo_macOS" */ = {
 			isa = XCConfigurationList;
@@ -542,6 +559,7 @@
 				29F5BE321F401FBD000D2AA0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
