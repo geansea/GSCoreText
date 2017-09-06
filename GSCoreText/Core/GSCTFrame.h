@@ -15,6 +15,6 @@
 @property (copy)   NSArray<GSCTLine *> *lines;
 @property (assign) CGRect rect;
 @property (assign) CGRect usedRect;
-
+@property (assign) BOOL vertical;
 
 @end

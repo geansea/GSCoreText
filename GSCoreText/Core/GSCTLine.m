@@ -7,6 +7,7 @@
 //
 
 #import "GSCTLine.h"
+#import <CoreText/CoreText.h>
 
 @implementation GSCTLine
 

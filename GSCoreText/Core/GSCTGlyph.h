@@ -18,6 +18,7 @@
 @property (assign) CGPoint drawPos;
 @property (assign) CGRect rect;
 @property (assign) CGRect usedRect;
+@property (assign) BOOL vertical;
 
 - (unichar)utf16Code;
 - (UTF32Char)utf32Code;
