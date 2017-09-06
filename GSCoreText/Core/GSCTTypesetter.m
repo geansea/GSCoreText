@@ -7,6 +7,7 @@
 //
 
 #import "GSCTTypesetter.h"
+#import <CoreText/CoreText.h>
 
 @implementation GSCTTypesetter
 

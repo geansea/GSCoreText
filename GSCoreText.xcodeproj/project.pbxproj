@@ -20,10 +20,14 @@
 		29F5BE2E1F401FBD000D2AA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29F5BE2C1F401FBD000D2AA0 /* Main.storyboard */; };
 		29F5BE351F401FEA000D2AA0 /* GSCTTypesetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F5BE341F401FEA000D2AA0 /* GSCTTypesetter.m */; };
 		29F5BE361F401FEA000D2AA0 /* GSCTTypesetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F5BE341F401FEA000D2AA0 /* GSCTTypesetter.m */; };
-		932827761F500EA1005CFC7F /* GSGlyph.m in Sources */ = {isa = PBXBuildFile; fileRef = 932827751F500EA1005CFC7F /* GSGlyph.m */; };
-		932827771F500EA1005CFC7F /* GSGlyph.m in Sources */ = {isa = PBXBuildFile; fileRef = 932827751F500EA1005CFC7F /* GSGlyph.m */; };
 		9328278C1F5CFD2A005CFC7F /* GSCTLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 9328278B1F5CFD2A005CFC7F /* GSCTLine.m */; };
 		9328278D1F5CFD2B005CFC7F /* GSCTLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 9328278B1F5CFD2A005CFC7F /* GSCTLine.m */; };
+		932827961F5F93E2005CFC7F /* GSCTFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 932827951F5F93E2005CFC7F /* GSCTFrame.m */; };
+		932827971F5F93E2005CFC7F /* GSCTFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 932827951F5F93E2005CFC7F /* GSCTFrame.m */; };
+		9328279A1F5F945D005CFC7F /* GSCTFramesetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 932827991F5F945D005CFC7F /* GSCTFramesetter.m */; };
+		9328279B1F5F945D005CFC7F /* GSCTFramesetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 932827991F5F945D005CFC7F /* GSCTFramesetter.m */; };
+		932827A41F5FEBB9005CFC7F /* GSCTGlyph.m in Sources */ = {isa = PBXBuildFile; fileRef = 932827A31F5FEBB9005CFC7F /* GSCTGlyph.m */; };
+		932827A51F5FEBB9005CFC7F /* GSCTGlyph.m in Sources */ = {isa = PBXBuildFile; fileRef = 932827A31F5FEBB9005CFC7F /* GSCTGlyph.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,10 +54,14 @@
 		29F5BE2F1F401FBD000D2AA0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		29F5BE331F401FEA000D2AA0 /* GSCTTypesetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GSCTTypesetter.h; path = GSCoreText/Core/GSCTTypesetter.h; sourceTree = "<group>"; };
 		29F5BE341F401FEA000D2AA0 /* GSCTTypesetter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GSCTTypesetter.m; path = GSCoreText/Core/GSCTTypesetter.m; sourceTree = "<group>"; };
-		932827741F500EA1005CFC7F /* GSGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GSGlyph.h; path = GSCoreText/Core/GSGlyph.h; sourceTree = "<group>"; };
-		932827751F500EA1005CFC7F /* GSGlyph.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GSGlyph.m; path = GSCoreText/Core/GSGlyph.m; sourceTree = "<group>"; };
 		9328278A1F5CFD2A005CFC7F /* GSCTLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GSCTLine.h; path = GSCoreText/Core/GSCTLine.h; sourceTree = "<group>"; };
 		9328278B1F5CFD2A005CFC7F /* GSCTLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GSCTLine.m; path = GSCoreText/Core/GSCTLine.m; sourceTree = "<group>"; };
+		932827941F5F93E2005CFC7F /* GSCTFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GSCTFrame.h; path = GSCoreText/Core/GSCTFrame.h; sourceTree = "<group>"; };
+		932827951F5F93E2005CFC7F /* GSCTFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GSCTFrame.m; path = GSCoreText/Core/GSCTFrame.m; sourceTree = "<group>"; };
+		932827981F5F945D005CFC7F /* GSCTFramesetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GSCTFramesetter.h; path = GSCoreText/Core/GSCTFramesetter.h; sourceTree = "<group>"; };
+		932827991F5F945D005CFC7F /* GSCTFramesetter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GSCTFramesetter.m; path = GSCoreText/Core/GSCTFramesetter.m; sourceTree = "<group>"; };
+		932827A21F5FEBB9005CFC7F /* GSCTGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GSCTGlyph.h; path = GSCoreText/Core/GSCTGlyph.h; sourceTree = "<group>"; };
+		932827A31F5FEBB9005CFC7F /* GSCTGlyph.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GSCTGlyph.m; path = GSCoreText/Core/GSCTGlyph.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,10 +107,14 @@
 			children = (
 				29F5BE331F401FEA000D2AA0 /* GSCTTypesetter.h */,
 				29F5BE341F401FEA000D2AA0 /* GSCTTypesetter.m */,
+				932827981F5F945D005CFC7F /* GSCTFramesetter.h */,
+				932827991F5F945D005CFC7F /* GSCTFramesetter.m */,
+				932827941F5F93E2005CFC7F /* GSCTFrame.h */,
+				932827951F5F93E2005CFC7F /* GSCTFrame.m */,
 				9328278A1F5CFD2A005CFC7F /* GSCTLine.h */,
 				9328278B1F5CFD2A005CFC7F /* GSCTLine.m */,
-				932827741F500EA1005CFC7F /* GSGlyph.h */,
-				932827751F500EA1005CFC7F /* GSGlyph.m */,
+				932827A21F5FEBB9005CFC7F /* GSCTGlyph.h */,
+				932827A31F5FEBB9005CFC7F /* GSCTGlyph.m */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -264,12 +276,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				932827A41F5FEBB9005CFC7F /* GSCTGlyph.m in Sources */,
 				9328278C1F5CFD2A005CFC7F /* GSCTLine.m in Sources */,
-				932827761F500EA1005CFC7F /* GSGlyph.m in Sources */,
 				29F5BE0E1F401FA7000D2AA0 /* ViewController.m in Sources */,
 				29F5BE351F401FEA000D2AA0 /* GSCTTypesetter.m in Sources */,
 				29F5BE0B1F401FA7000D2AA0 /* AppDelegate.m in Sources */,
 				29F5BE081F401FA7000D2AA0 /* main.m in Sources */,
+				932827961F5F93E2005CFC7F /* GSCTFrame.m in Sources */,
+				9328279A1F5F945D005CFC7F /* GSCTFramesetter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,12 +291,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				932827A51F5FEBB9005CFC7F /* GSCTGlyph.m in Sources */,
 				9328278D1F5CFD2B005CFC7F /* GSCTLine.m in Sources */,
-				932827771F500EA1005CFC7F /* GSGlyph.m in Sources */,
 				29F5BE291F401FBD000D2AA0 /* ViewController.m in Sources */,
 				29F5BE361F401FEA000D2AA0 /* GSCTTypesetter.m in Sources */,
 				29F5BE261F401FBD000D2AA0 /* main.m in Sources */,
 				29F5BE231F401FBD000D2AA0 /* AppDelegate.m in Sources */,
+				932827971F5F93E2005CFC7F /* GSCTFrame.m in Sources */,
+				9328279B1F5F945D005CFC7F /* GSCTFramesetter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,19 +1,20 @@
 //
-//  GSCTLine.h
+//  GSCTFrame.h
 //  GSCoreText
 //
-//  Created by geansea on 2017/9/4.
+//  Created by geansea on 2017/9/6.
 //
 //
 
-#import "GSCTGlyph.h"
+#import "GSCTLine.h"
 
-@interface GSCTLine : NSObject
+@interface GSCTFrame : NSObject
 
 @property (assign) NSRange range;
 @property (copy)   NSString * string;
-@property (copy)   NSArray<GSCTGlyph *> *glyphs;
+@property (copy)   NSArray<GSCTLine *> *lines;
 @property (assign) CGRect rect;
 @property (assign) CGRect usedRect;
+
 
 @end
