@@ -7,8 +7,13 @@
 //
 
 #import "GSCTLine.h"
-#import <CoreText/CoreText.h>
 
 @implementation GSCTLine
+
+- (instancetype)init {
+    if (self = [super init]) {
+    }
+    return self;
+}
 
 @end

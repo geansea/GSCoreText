@@ -10,6 +10,12 @@
 
 @implementation GSCTGlyph
 
+- (instancetype)init {
+    if (self = [super init]) {
+    }
+    return self;
+}
+
 - (unichar)utf16Code {
     return [_string characterAtIndex:0];
 }

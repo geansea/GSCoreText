@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		291E4BD51F60442200586F6A /* GSCTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 291E4BD41F60442200586F6A /* GSCTUtils.m */; };
+		291E4BD61F60442200586F6A /* GSCTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 291E4BD41F60442200586F6A /* GSCTUtils.m */; };
 		29F5BE081F401FA7000D2AA0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F5BE071F401FA7000D2AA0 /* main.m */; };
 		29F5BE0B1F401FA7000D2AA0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F5BE0A1F401FA7000D2AA0 /* AppDelegate.m */; };
 		29F5BE0E1F401FA7000D2AA0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F5BE0D1F401FA7000D2AA0 /* ViewController.m */; };
@@ -31,6 +33,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		291E4BD31F60442200586F6A /* GSCTUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GSCTUtils.h; path = GSCoreText/Core/GSCTUtils.h; sourceTree = "<group>"; };
+		291E4BD41F60442200586F6A /* GSCTUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GSCTUtils.m; path = GSCoreText/Core/GSCTUtils.m; sourceTree = "<group>"; };
 		29F5BDFC1F3FFD71000D2AA0 /* GSCoreText.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GSCoreText.h; path = GSCoreText/GSCoreText.h; sourceTree = "<group>"; };
 		29F5BDFD1F401F22000D2AA0 /* GSCTDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GSCTDefines.h; path = GSCoreText/GSCTDefines.h; sourceTree = "<group>"; };
 		29F5BE031F401FA7000D2AA0 /* GSCoreTextDemo_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GSCoreTextDemo_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -115,6 +119,8 @@
 				9328278B1F5CFD2A005CFC7F /* GSCTLine.m */,
 				932827A21F5FEBB9005CFC7F /* GSCTGlyph.h */,
 				932827A31F5FEBB9005CFC7F /* GSCTGlyph.m */,
+				291E4BD31F60442200586F6A /* GSCTUtils.h */,
+				291E4BD41F60442200586F6A /* GSCTUtils.m */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -279,6 +285,7 @@
 				932827A41F5FEBB9005CFC7F /* GSCTGlyph.m in Sources */,
 				9328278C1F5CFD2A005CFC7F /* GSCTLine.m in Sources */,
 				29F5BE0E1F401FA7000D2AA0 /* ViewController.m in Sources */,
+				291E4BD51F60442200586F6A /* GSCTUtils.m in Sources */,
 				29F5BE351F401FEA000D2AA0 /* GSCTTypesetter.m in Sources */,
 				29F5BE0B1F401FA7000D2AA0 /* AppDelegate.m in Sources */,
 				29F5BE081F401FA7000D2AA0 /* main.m in Sources */,
@@ -294,6 +301,7 @@
 				932827A51F5FEBB9005CFC7F /* GSCTGlyph.m in Sources */,
 				9328278D1F5CFD2B005CFC7F /* GSCTLine.m in Sources */,
 				29F5BE291F401FBD000D2AA0 /* ViewController.m in Sources */,
+				291E4BD61F60442200586F6A /* GSCTUtils.m in Sources */,
 				29F5BE361F401FEA000D2AA0 /* GSCTTypesetter.m in Sources */,
 				29F5BE261F401FBD000D2AA0 /* main.m in Sources */,
 				29F5BE231F401FBD000D2AA0 /* AppDelegate.m in Sources */,
