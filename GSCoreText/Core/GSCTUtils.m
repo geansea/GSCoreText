@@ -26,7 +26,9 @@
     return self;
 }
 
-- (GSCTLine *)createLineFromCTLine:(CTLineRef)ctLine {
+- (GSCTLine *)createLineFromCTLine:(CTLineRef)ctLine
+                            string:(NSString *)string
+                          vertical:(BOOL)vertical {
     GSCTLine *line = [[GSCTLine alloc] init];
     
     // Line infos
@@ -35,7 +37,11 @@
     CGFloat lineDescent = 0;
     CGFloat lineWidth = CTLineGetTypographicBounds(ctLine, &lineAscent, &lineDescent, NULL);
     line.range = NSMakeRange(lineRange.location, lineRange.length);
+    line.string = [string substringWithRange:line.range];
+    line.origin = CGPointZero;
     line.rect = CGRectMake(0, -lineAscent, lineWidth, lineAscent + lineDescent);
+    line.usedRect = line.rect;
+    line.vertical = vertical;
     
     // Line glyphs
     CFIndex glyphCount = CTLineGetGlyphCount(ctLine);
@@ -53,20 +59,23 @@
         const CGSize *advances = [self advancesForRun:run];
         // Run attributes
         CFDictionaryRef attributes = CTRunGetAttributes(run);
-        //GSFont *font = (__bridge GSFont *)CFDictionaryGetValue(attributes, kCTFontAttributeName);
-        //GSColor *color = [GSColor colorWithCGColor:<#(nonnull CGColorRef)#>];
-        //UIFont *font = attributes[NSFontAttributeName];
-        //UIColor *color = attributes[NSForegroundColorAttributeName];
+        CTFontRef font = CFDictionaryGetValue(attributes, kCTFontNameAttribute);
         for (CFIndex i = 0; i < CTRunGetGlyphCount(run); ++i) {
+            CFIndex endIndex = (i + 1 < CTRunGetGlyphCount(run)) ? indices[i + 1] : NSMaxRange(line.range);
             GSCTGlyph *glyph = [[GSCTGlyph alloc] init];
-            
+            glyph.range = NSMakeRange(indices[i], endIndex - indices[i]);
+            glyph.string = [string substringWithRange:glyph.range];
+            glyph.glyph = glyphs[i];
+            glyph.font = (__bridge GSFont *)font;
+            glyph.origin = positions[i];
+            glyph.rect = CGRectMake(0, -runAscent, advances[i].width, runAscent + runDescent);
+            glyph.usedRect = glyph.rect;
+            glyph.vertical = vertical;
             [lineGlyphs addObject:glyph];
         }
     }
-    if (lineGlyphs.lastObject) {
-        GSCTGlyph *glyph = lineGlyphs.lastObject;
-    }
     
+    line.glyphs = lineGlyphs;
     return line;
 }
 

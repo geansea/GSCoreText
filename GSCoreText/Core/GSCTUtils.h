@@ -11,6 +11,8 @@
 
 @interface GSCTUtils : NSObject
 
-- (GSCTLine *)createLineFromCTLine:(CTLineRef)ctLine;
+- (GSCTLine *)createLineFromCTLine:(CTLineRef)ctLine
+                            string:(NSString *)string
+                          vertical:(BOOL)vertical;
 
 @end

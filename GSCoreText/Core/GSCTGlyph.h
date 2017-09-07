@@ -14,7 +14,6 @@
 @property (copy)   NSString *string;
 @property (assign) CGGlyph glyph;
 @property (strong) GSFont *font;
-@property (strong) GSColor *color;
 @property (assign) CGPoint origin;
 @property (assign) CGRect rect;
 @property (assign) CGRect usedRect;
