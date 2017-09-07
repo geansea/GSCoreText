@@ -11,6 +11,6 @@
 
 @interface GSCTUtils : NSObject
 
-+ (GSCTLine *)createLineFromCTLine:(CTLineRef)ctLine;
+- (GSCTLine *)createLineFromCTLine:(CTLineRef)ctLine;
 
 @end

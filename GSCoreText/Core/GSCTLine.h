@@ -13,6 +13,7 @@
 @property (assign) NSRange range;
 @property (copy)   NSString *string;
 @property (copy)   NSArray<GSCTGlyph *> *glyphs;
+@property (assign) CGPoint origin;
 @property (assign) CGRect rect;
 @property (assign) CGRect usedRect;
 @property (assign) BOOL vertical;
