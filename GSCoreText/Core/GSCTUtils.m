@@ -21,7 +21,10 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        
+        self.glyphsData = [NSMutableData data];
+        self.indicesData = [NSMutableData data];
+        self.positionsData = [NSMutableData data];
+        self.advancesData = [NSMutableData data];
     }
     return self;
 }
@@ -74,8 +77,8 @@
             [lineGlyphs addObject:glyph];
         }
     }
-    
     line.glyphs = lineGlyphs;
+    
     return line;
 }
 
