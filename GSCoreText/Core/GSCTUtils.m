@@ -15,6 +15,11 @@
 @property (strong) NSMutableData *positionsData;
 @property (strong) NSMutableData *advancesData;
 
+@property (strong) NSMutableIndexSet *compressLeftSet;
+@property (strong) NSMutableIndexSet *compressRightSet;
+@property (strong) NSMutableIndexSet *notLineBeginSet;
+@property (strong) NSMutableIndexSet *notLineEndSet;
+
 @end
 
 @implementation GSCTUtils
@@ -29,24 +34,29 @@
     return self;
 }
 
-- (GSCTLine *)createLineFromCTLine:(CTLineRef)ctLine
-                            string:(NSString *)string
-                          vertical:(BOOL)vertical {
-    GSCTLine *line = [[GSCTLine alloc] init];
-    
-    // Line infos
+- (GSCTLine *)lineFromCTLine:(CTLineRef)ctLine
+                      string:(NSString *)string
+                    vertical:(BOOL)vertical {
     CFRange lineRange = CTLineGetStringRange(ctLine);
     CGFloat lineAscent = 0;
     CGFloat lineDescent = 0;
     CGFloat lineWidth = CTLineGetTypographicBounds(ctLine, &lineAscent, &lineDescent, NULL);
+    
+    GSCTLine *line = [[GSCTLine alloc] init];
     line.range = NSMakeRange(lineRange.location, lineRange.length);
     line.string = [string substringWithRange:line.range];
+    line.glyphs = [self glyphsFromCTLine:ctLine string:string vertical:vertical];
     line.origin = CGPointZero;
     line.rect = CGRectMake(0, -lineAscent, lineWidth, lineAscent + lineDescent);
     line.usedRect = line.rect;
     line.vertical = vertical;
-    
-    // Line glyphs
+    return line;
+}
+
+- (NSArray<GSCTGlyph *> *)glyphsFromCTLine:(CTLineRef)ctLine
+                                    string:(NSString *)string
+                                  vertical:(BOOL)vertical {
+    CFRange lineRange = CTLineGetStringRange(ctLine);
     CFIndex glyphCount = CTLineGetGlyphCount(ctLine);
     NSMutableArray<GSCTGlyph *> *lineGlyphs = [NSMutableArray arrayWithCapacity:glyphCount];
     CFArrayRef runs = CTLineGetGlyphRuns(ctLine);
@@ -64,7 +74,10 @@
         CFDictionaryRef attributes = CTRunGetAttributes(run);
         CTFontRef font = CFDictionaryGetValue(attributes, kCTFontNameAttribute);
         for (CFIndex i = 0; i < CTRunGetGlyphCount(run); ++i) {
-            CFIndex endIndex = (i + 1 < CTRunGetGlyphCount(run)) ? indices[i + 1] : NSMaxRange(line.range);
+            CFIndex endIndex = lineRange.location + lineRange.length;
+            if (i + 1 < CTRunGetGlyphCount(run)) {
+                endIndex = indices[i + 1];
+            }
             GSCTGlyph *glyph = [[GSCTGlyph alloc] init];
             glyph.range = NSMakeRange(indices[i], endIndex - indices[i]);
             glyph.string = [string substringWithRange:glyph.range];
@@ -77,9 +90,99 @@
             [lineGlyphs addObject:glyph];
         }
     }
-    line.glyphs = lineGlyphs;
+    return lineGlyphs;
+}
+
+- (BOOL)shouldAddGap:(unichar)code prevCode:(unichar)prevCode {
+    if ([self isAlphaDigit:prevCode] && [self isCjk:code]) { return YES; }
+    if ([self isCjk:prevCode] && [self isAlphaDigit:code]) { return YES; }
+    return NO;
+}
+
+- (BOOL)canCompressLeft:(unichar)code {
+    if (!_compressLeftSet) {
+        self.compressLeftSet = [NSMutableIndexSet indexSet];
+        [_compressLeftSet addIndex:0x2018]; // ‘
+        [_compressLeftSet addIndex:0x201C]; // “
+        [_compressLeftSet addIndex:0x3008]; // 〈
+        [_compressLeftSet addIndex:0x300A]; // 《
+        [_compressLeftSet addIndex:0x300C]; // 「
+        [_compressLeftSet addIndex:0x300E]; // 『
+        [_compressLeftSet addIndex:0x3010]; // 【
+        [_compressLeftSet addIndex:0x3014]; // 〔
+        [_compressLeftSet addIndex:0x3016]; // 〖
+        [_compressLeftSet addIndex:0xFF08]; // （
+        [_compressLeftSet addIndex:0xFF3B]; // ［
+        [_compressLeftSet addIndex:0xFF5B]; // ｛
+    }
+    return [_compressLeftSet containsIndex:code];
+}
+
+- (BOOL)canCompressRight:(unichar)code {
+    if (!_compressRightSet) {
+        self.compressRightSet = [NSMutableIndexSet indexSet];
+        [_compressRightSet addIndex:0x2019]; // ’
+        [_compressRightSet addIndex:0x201D]; // ”
+        [_compressRightSet addIndex:0x3001]; // 、
+        [_compressRightSet addIndex:0x3002]; // 。
+        [_compressRightSet addIndex:0x3009]; // 〉
+        [_compressRightSet addIndex:0x300B]; // 》
+        [_compressRightSet addIndex:0x300D]; // 」
+        [_compressRightSet addIndex:0x300F]; // 』
+        [_compressRightSet addIndex:0x3011]; // 】
+        [_compressRightSet addIndex:0x3015]; // 〕
+        [_compressRightSet addIndex:0x3017]; // 〗
+        [_compressRightSet addIndex:0xFF01]; // ！
+        [_compressRightSet addIndex:0xFF09]; // ）
+        [_compressRightSet addIndex:0xFF0C]; // ，
+        [_compressRightSet addIndex:0xFF1A]; // ：
+        [_compressRightSet addIndex:0xFF1B]; // ；
+        [_compressRightSet addIndex:0xFF1F]; // ？
+        [_compressRightSet addIndex:0xFF3D]; // ］
+        [_compressRightSet addIndex:0xFF5D]; // ｝
+    }
+    return [_compressRightSet containsIndex:code];
+}
+
+- (BOOL)canBreak:(unichar)code prevCode:(unichar)prevCode {
+    if (0 == prevCode) { return NO; }
     
-    return line;
+    // Always can break after space
+    if (' ' == prevCode) { return YES; }
+    // No Break SPace
+    if (0xA0 == prevCode) { return NO; }
+    
+    // Space follow prev
+    if (' ' == code || 0xA0 == code) { return NO; }
+    
+    if ([self isAlphaDigit:prevCode]) {
+        if ([self isAlphaDigit:code]) { return NO; }
+        if ('\'' == code) { return NO; }
+        if ('\"' == code) { return NO; }
+        if ('-' == code) { return NO; }
+        if ('_' == code) { return NO; }
+    }
+    
+    if ([self isAlphaDigit:code]) {
+        if ('\'' == prevCode) { return NO; }
+        if ('\"' == prevCode) { return NO; }
+        if (0x2019 == prevCode) { return NO; }
+    }
+    
+    if ([self cannotLineBegin:code]) { return NO; }
+    if ([self cannotLineEnd:prevCode]) { return NO; }
+    
+    return YES;
+}
+
+- (BOOL)canStretch:(unichar)code prevCode:(unichar)prevCode {
+    if ('/' == prevCode) {
+        if ([self isAlphaDigit:code]) { return NO; }
+    }
+    if ('/' == code) {
+        if ([self isAlphaDigit:prevCode]) { return NO; }
+    }
+    return YES;
 }
 
 #pragma mark - Private
@@ -130,6 +233,48 @@
         advances = buffer;
     }
     return advances;
+}
+
+- (BOOL)isAlphaDigit:(unichar)code {
+    return ('a' <= code && code <= 'z') || ('A' <= code && code <= 'Z') || ('0' <= code && code <= '9');
+}
+
+- (BOOL)isCjk:(unichar)code {
+    return (0x4E00 <= code && code < 0xD800) || (0xE000 <= code && code < 0xFB00);
+}
+
+- (BOOL)cannotLineBegin:(unichar)code {
+    if ([self canCompressRight:code]) {
+        return YES;
+    }
+    if (!_notLineBeginSet) {
+        self.notLineBeginSet = [NSMutableIndexSet indexSet];
+        [_notLineBeginSet addIndex:'!'];
+        [_notLineBeginSet addIndex:')'];
+        [_notLineBeginSet addIndex:','];
+        [_notLineBeginSet addIndex:'.'];
+        [_notLineBeginSet addIndex:':'];
+        [_notLineBeginSet addIndex:';'];
+        [_notLineBeginSet addIndex:'>'];
+        [_notLineBeginSet addIndex:'?'];
+        [_notLineBeginSet addIndex:']'];
+        [_notLineBeginSet addIndex:'}'];
+    }
+    return [_notLineBeginSet containsIndex:code];
+}
+
+- (BOOL)cannotLineEnd:(unichar)code {
+    if ([self canCompressLeft:code]) {
+        return YES;
+    }
+    if (!_notLineEndSet) {
+        self.notLineEndSet = [NSMutableIndexSet indexSet];
+        [_notLineEndSet addIndex:'('];
+        [_notLineEndSet addIndex:'<'];
+        [_notLineEndSet addIndex:'['];
+        [_notLineEndSet addIndex:'{'];
+    }
+    return [_notLineEndSet containsIndex:code];
 }
 
 @end

@@ -11,8 +11,22 @@
 
 @interface GSCTUtils : NSObject
 
-- (GSCTLine *)createLineFromCTLine:(CTLineRef)ctLine
-                            string:(NSString *)string
-                          vertical:(BOOL)vertical;
+- (GSCTLine *)lineFromCTLine:(CTLineRef)ctLine
+                      string:(NSString *)string
+                    vertical:(BOOL)vertical;
+
+- (NSArray<GSCTGlyph *> *)glyphsFromCTLine:(CTLineRef)ctLine
+                                    string:(NSString *)string
+                                  vertical:(BOOL)vertical;
+
+- (BOOL)shouldAddGap:(unichar)code prevCode:(unichar)prevCode;
+
+- (BOOL)canCompressLeft:(unichar)code;
+
+- (BOOL)canCompressRight:(unichar)code;
+
+- (BOOL)canBreak:(unichar)code prevCode:(unichar)prevCode;
+
+- (BOOL)canStretch:(unichar)code prevCode:(unichar)prevCode;
 
 @end

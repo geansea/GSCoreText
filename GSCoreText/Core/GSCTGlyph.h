@@ -20,6 +20,5 @@
 @property (assign) BOOL vertical;
 
 - (unichar)utf16Code;
-- (UTF32Char)utf32Code;
 
 @end
