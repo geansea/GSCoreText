@@ -37,14 +37,46 @@
 }
 
 - (GSCTLine *)createLineWithWidth:(CGFloat)width startIndex:(NSUInteger)startIndex {
+    // Glyphs
     CGFloat tryWidth = width * 1.3;
     CFIndex length = CTTypesetterSuggestClusterBreak(_ctTypesetter, startIndex, tryWidth);
     CTLineRef ctLine = CTTypesetterCreateLine(_ctTypesetter, CFRangeMake(startIndex, length));
-    GSCTLine *line = [_utils createLineFromCTLine:ctLine string:_layoutString.string vertical:NO];
+    NSArray<GSCTGlyph *> *tryGlyphs = [_utils glyphsFromCTLine:ctLine string:_layoutString.string vertical:NO];
     
+    [self compressGlyphs:tryGlyphs];
     
-    return nil;
+    NSUInteger breakPos = [self breakPosForGlyphs:tryGlyphs withWidth:width];
+    NSArray<GSCTGlyph *> *glyphs = [tryGlyphs subarrayWithRange:NSMakeRange(0, breakPos)];
     
+    [self adjustGlyphs:glyphs withWidth:width];
+    
+    // Line infos
+    NSRange lineRange = NSMakeRange(0, 0);
+    CGFloat lineLeft = 0;
+    CGFloat lineRight = 0;
+    if (glyphs.count > 0) {
+        GSCTGlyph *first = glyphs.firstObject;
+        GSCTGlyph *last = glyphs.lastObject;
+        lineRange.location = first.range.location;
+        lineRange.length = NSMaxRange(last.range) - lineRange.location;
+        lineLeft = CGRectGetMinX(first.usedRect);
+        lineRight = CGRectGetMaxX(last.usedRect);
+    }
+    CGFloat lineTop = 0;
+    CGFloat lineBottom = 0;
+    for (GSCTGlyph *glyph in glyphs) {
+        lineTop = MIN(lineTop, CGRectGetMinY(glyph.usedRect));
+        lineBottom = MAX(lineBottom, CGRectGetMaxY(glyph.usedRect));
+    }
+    GSCTLine *line = [[GSCTLine alloc] init];
+    line.range = lineRange;
+    line.string = [_layoutString.string substringWithRange:line.range];
+    line.glyphs = glyphs;
+    line.origin = CGPointZero;
+    line.rect = CGRectMake(0, lineTop, width, lineBottom - lineTop);
+    line.usedRect = CGRectMake(lineLeft, lineTop, lineRight - lineLeft, lineBottom - lineTop);
+    line.vertical = NO;
+    return line;
 }
 
 #pragma mark - Private
@@ -57,6 +89,18 @@
     [_attributedString enumerateAttributesInRange:totalRange options:0 usingBlock:^(NSDictionary<NSString *, id> *attrs, NSRange range, BOOL *stop) {
         ;
     }];
+}
+
+- (void)compressGlyphs:(NSArray<GSCTGlyph *> *)glyphs {
+    
+}
+
+- (NSUInteger)breakPosForGlyphs:(NSArray<GSCTGlyph *> *)glyphs withWidth:(CGFloat)width {
+    return 0;
+}
+
+- (void)adjustGlyphs:(NSArray<GSCTGlyph *> *)glyphs withWidth:(CGFloat)width {
+    
 }
 
 @end

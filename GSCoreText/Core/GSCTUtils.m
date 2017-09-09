@@ -145,42 +145,56 @@
 }
 
 - (BOOL)canBreak:(unichar)code prevCode:(unichar)prevCode {
-    if (0 == prevCode) { return NO; }
-    
+    if (0 == prevCode) {
+        return NO;
+    }
     // Always can break after space
-    if (' ' == prevCode) { return YES; }
+    if (' ' == prevCode) {
+        return YES;
+    }
     // No Break SPace
-    if (0xA0 == prevCode) { return NO; }
-    
+    if (0xA0 == prevCode) {
+        return NO;
+    }
     // Space follow prev
-    if (' ' == code || 0xA0 == code) { return NO; }
-    
+    if (' ' == code || 0xA0 == code) {
+        return NO;
+    }
     if ([self isAlphaDigit:prevCode]) {
-        if ([self isAlphaDigit:code]) { return NO; }
-        if ('\'' == code) { return NO; }
-        if ('\"' == code) { return NO; }
-        if ('-' == code) { return NO; }
-        if ('_' == code) { return NO; }
+        if ([self isAlphaDigit:code]) {
+            return NO;
+        }
+        if ('\'' == code || '\"' == code || '-' == code || '_' == code) {
+            return NO;
+        }
     }
-    
     if ([self isAlphaDigit:code]) {
-        if ('\'' == prevCode) { return NO; }
-        if ('\"' == prevCode) { return NO; }
-        if (0x2019 == prevCode) { return NO; }
+        if ('\'' == prevCode || '\"' == prevCode || 0x2019 == prevCode) {
+            return NO;
+        }
     }
-    
-    if ([self cannotLineBegin:code]) { return NO; }
-    if ([self cannotLineEnd:prevCode]) { return NO; }
-    
+    if ([self cannotLineBegin:code]) {
+        return NO;
+    }
+    if ([self cannotLineEnd:prevCode]) {
+        return NO;
+    }
     return YES;
 }
 
 - (BOOL)canStretch:(unichar)code prevCode:(unichar)prevCode {
+    if (![self canBreak:code prevCode:prevCode]) {
+        return NO;
+    }
     if ('/' == prevCode) {
-        if ([self isAlphaDigit:code]) { return NO; }
+        if ([self isAlphaDigit:code]) {
+            return NO;
+        }
     }
     if ('/' == code) {
-        if ([self isAlphaDigit:prevCode]) { return NO; }
+        if ([self isAlphaDigit:prevCode]) {
+            return NO;
+        }
     }
     return YES;
 }
