@@ -24,7 +24,7 @@
         [color isEqualTo:nil];
         CTFontRef ctFont = (__bridge CTFontRef)glyph.font;
         CGGlyph cgGlyph = glyph.glyph;
-        CGPoint pos = glyph.origin;
+        CGPoint pos = glyph.drawPos;
         CTFontDrawGlyphs(ctFont, &cgGlyph, &pos, 1, context);
     }
 }

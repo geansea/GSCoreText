@@ -17,7 +17,9 @@
 }
 
 - (void)drawInContext:(CGContextRef)context {
-    
+    for (GSCTLine *line in _lines) {
+        [line drawInContext:context];
+    }
 }
 
 @end

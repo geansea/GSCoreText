@@ -19,11 +19,13 @@
                                     string:(NSString *)string
                                   vertical:(BOOL)vertical;
 
+- (BOOL)isNewline:(unichar)code;
+
 - (BOOL)shouldAddGap:(unichar)code prevCode:(unichar)prevCode;
 
-- (BOOL)canCompressLeft:(unichar)code;
+- (BOOL)canGlyphCompressLeft:(GSCTGlyph *)glyph;
 
-- (BOOL)canCompressRight:(unichar)code;
+- (BOOL)canGlyphCompressRight:(GSCTGlyph *)glyph;
 
 - (BOOL)canBreak:(unichar)code prevCode:(unichar)prevCode;
 

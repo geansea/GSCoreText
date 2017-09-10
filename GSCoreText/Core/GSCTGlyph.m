@@ -20,4 +20,22 @@
     return [_string characterAtIndex:0];
 }
 
+- (CGPoint)drawPos {
+    return CGPointMake(floor(_x), floor(_y));
+}
+
+- (CGRect)rect {
+    return CGRectMake(_x,
+                      _y - _ascent,
+                      _width,
+                      _ascent + _descent);
+}
+
+- (CGRect)usedRect {
+    return CGRectMake(_x + _compressLeft,
+                      _y - _ascent,
+                      _width - _compressLeft - _compressRight,
+                      _ascent + _descent);
+}
+
 @end

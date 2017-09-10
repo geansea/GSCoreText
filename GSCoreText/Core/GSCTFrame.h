@@ -11,7 +11,6 @@
 @interface GSCTFrame : NSObject
 
 @property (assign) NSRange range;
-@property (copy)   NSAttributedString *string;
 @property (copy)   NSArray<GSCTLine *> *lines;
 @property (assign) CGRect rect;
 @property (assign) CGRect usedRect;

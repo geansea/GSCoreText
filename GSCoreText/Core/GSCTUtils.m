@@ -83,14 +83,20 @@
             glyph.string = [string substringWithRange:glyph.range];
             glyph.glyph = glyphs[i];
             glyph.font = (__bridge GSFont *)font;
-            glyph.origin = positions[i];
-            glyph.rect = CGRectMake(0, -runAscent, advances[i].width, runAscent + runDescent);
-            glyph.usedRect = glyph.rect;
+            glyph.x = positions[i].x;
+            glyph.y = positions[i].y;
+            glyph.ascent = runAscent;
+            glyph.descent = runDescent;
+            glyph.width = advances[i].width;
             glyph.vertical = vertical;
             [lineGlyphs addObject:glyph];
         }
     }
     return lineGlyphs;
+}
+
+- (BOOL)isNewline:(unichar)code {
+    return ('\r' == code || '\n' == code);
 }
 
 - (BOOL)shouldAddGap:(unichar)code prevCode:(unichar)prevCode {
@@ -103,49 +109,18 @@
     return NO;
 }
 
-- (BOOL)canCompressLeft:(unichar)code {
-    if (!_compressLeftSet) {
-        self.compressLeftSet = [NSMutableIndexSet indexSet];
-        [_compressLeftSet addIndex:0x2018]; // ‘
-        [_compressLeftSet addIndex:0x201C]; // “
-        [_compressLeftSet addIndex:0x3008]; // 〈
-        [_compressLeftSet addIndex:0x300A]; // 《
-        [_compressLeftSet addIndex:0x300C]; // 「
-        [_compressLeftSet addIndex:0x300E]; // 『
-        [_compressLeftSet addIndex:0x3010]; // 【
-        [_compressLeftSet addIndex:0x3014]; // 〔
-        [_compressLeftSet addIndex:0x3016]; // 〖
-        [_compressLeftSet addIndex:0xFF08]; // （
-        [_compressLeftSet addIndex:0xFF3B]; // ［
-        [_compressLeftSet addIndex:0xFF5B]; // ｛
+- (BOOL)canGlyphCompressLeft:(GSCTGlyph *)glyph {
+    if (glyph.width < glyph.font.pointSize * 0.9) {
+        return NO;
     }
-    return [_compressLeftSet containsIndex:code];
+    return [self canCompressLeft:glyph.utf16Code];
 }
 
-- (BOOL)canCompressRight:(unichar)code {
-    if (!_compressRightSet) {
-        self.compressRightSet = [NSMutableIndexSet indexSet];
-        [_compressRightSet addIndex:0x2019]; // ’
-        [_compressRightSet addIndex:0x201D]; // ”
-        [_compressRightSet addIndex:0x3001]; // 、
-        [_compressRightSet addIndex:0x3002]; // 。
-        [_compressRightSet addIndex:0x3009]; // 〉
-        [_compressRightSet addIndex:0x300B]; // 》
-        [_compressRightSet addIndex:0x300D]; // 」
-        [_compressRightSet addIndex:0x300F]; // 』
-        [_compressRightSet addIndex:0x3011]; // 】
-        [_compressRightSet addIndex:0x3015]; // 〕
-        [_compressRightSet addIndex:0x3017]; // 〗
-        [_compressRightSet addIndex:0xFF01]; // ！
-        [_compressRightSet addIndex:0xFF09]; // ）
-        [_compressRightSet addIndex:0xFF0C]; // ，
-        [_compressRightSet addIndex:0xFF1A]; // ：
-        [_compressRightSet addIndex:0xFF1B]; // ；
-        [_compressRightSet addIndex:0xFF1F]; // ？
-        [_compressRightSet addIndex:0xFF3D]; // ］
-        [_compressRightSet addIndex:0xFF5D]; // ｝
+- (BOOL)canGlyphCompressRight:(GSCTGlyph *)glyph {
+    if (glyph.width < glyph.font.pointSize * 0.9) {
+        return NO;
     }
-    return [_compressRightSet containsIndex:code];
+    return [self canCompressRight:glyph.utf16Code];
 }
 
 - (BOOL)canBreak:(unichar)code prevCode:(unichar)prevCode {
@@ -259,6 +234,51 @@
 
 - (BOOL)isCjk:(unichar)code {
     return (0x4E00 <= code && code < 0xD800) || (0xE000 <= code && code < 0xFB00);
+}
+
+- (BOOL)canCompressLeft:(unichar)code {
+    if (!_compressLeftSet) {
+        self.compressLeftSet = [NSMutableIndexSet indexSet];
+        [_compressLeftSet addIndex:0x2018]; // ‘
+        [_compressLeftSet addIndex:0x201C]; // “
+        [_compressLeftSet addIndex:0x3008]; // 〈
+        [_compressLeftSet addIndex:0x300A]; // 《
+        [_compressLeftSet addIndex:0x300C]; // 「
+        [_compressLeftSet addIndex:0x300E]; // 『
+        [_compressLeftSet addIndex:0x3010]; // 【
+        [_compressLeftSet addIndex:0x3014]; // 〔
+        [_compressLeftSet addIndex:0x3016]; // 〖
+        [_compressLeftSet addIndex:0xFF08]; // （
+        [_compressLeftSet addIndex:0xFF3B]; // ［
+        [_compressLeftSet addIndex:0xFF5B]; // ｛
+    }
+    return [_compressLeftSet containsIndex:code];
+}
+
+- (BOOL)canCompressRight:(unichar)code {
+    if (!_compressRightSet) {
+        self.compressRightSet = [NSMutableIndexSet indexSet];
+        [_compressRightSet addIndex:0x2019]; // ’
+        [_compressRightSet addIndex:0x201D]; // ”
+        [_compressRightSet addIndex:0x3001]; // 、
+        [_compressRightSet addIndex:0x3002]; // 。
+        [_compressRightSet addIndex:0x3009]; // 〉
+        [_compressRightSet addIndex:0x300B]; // 》
+        [_compressRightSet addIndex:0x300D]; // 」
+        [_compressRightSet addIndex:0x300F]; // 』
+        [_compressRightSet addIndex:0x3011]; // 】
+        [_compressRightSet addIndex:0x3015]; // 〕
+        [_compressRightSet addIndex:0x3017]; // 〗
+        [_compressRightSet addIndex:0xFF01]; // ！
+        [_compressRightSet addIndex:0xFF09]; // ）
+        [_compressRightSet addIndex:0xFF0C]; // ，
+        [_compressRightSet addIndex:0xFF1A]; // ：
+        [_compressRightSet addIndex:0xFF1B]; // ；
+        [_compressRightSet addIndex:0xFF1F]; // ？
+        [_compressRightSet addIndex:0xFF3D]; // ］
+        [_compressRightSet addIndex:0xFF5D]; // ｝
+    }
+    return [_compressRightSet containsIndex:code];
 }
 
 - (BOOL)cannotLineBegin:(unichar)code {
