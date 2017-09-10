@@ -35,7 +35,7 @@
 }
 
 - (GSCTLine *)lineFromCTLine:(CTLineRef)ctLine
-                      string:(NSString *)string
+            attributedString:(NSAttributedString *)attributedString
                     vertical:(BOOL)vertical {
     CFRange lineRange = CTLineGetStringRange(ctLine);
     CGFloat lineAscent = 0;
@@ -44,8 +44,8 @@
     
     GSCTLine *line = [[GSCTLine alloc] init];
     line.range = NSMakeRange(lineRange.location, lineRange.length);
-    line.string = [string substringWithRange:line.range];
-    line.glyphs = [self glyphsFromCTLine:ctLine string:string vertical:vertical];
+    line.string = [attributedString attributedSubstringFromRange:line.range];
+    line.glyphs = [self glyphsFromCTLine:ctLine string:attributedString.string vertical:vertical];
     line.origin = CGPointZero;
     line.rect = CGRectMake(0, -lineAscent, lineWidth, lineAscent + lineDescent);
     line.usedRect = line.rect;
@@ -94,8 +94,12 @@
 }
 
 - (BOOL)shouldAddGap:(unichar)code prevCode:(unichar)prevCode {
-    if ([self isAlphaDigit:prevCode] && [self isCjk:code]) { return YES; }
-    if ([self isCjk:prevCode] && [self isAlphaDigit:code]) { return YES; }
+    if ([self isAlphaDigit:prevCode] && [self isCjk:code]) {
+        return YES;
+    }
+    if ([self isCjk:prevCode] && [self isAlphaDigit:code]) {
+        return YES;
+    }
     return NO;
 }
 

@@ -11,10 +11,12 @@
 @interface GSCTFrame : NSObject
 
 @property (assign) NSRange range;
-@property (copy)   NSString * string;
+@property (copy)   NSAttributedString *string;
 @property (copy)   NSArray<GSCTLine *> *lines;
 @property (assign) CGRect rect;
 @property (assign) CGRect usedRect;
 @property (assign) BOOL vertical;
+
+- (void)drawInContext:(CGContextRef)context;
 
 @end

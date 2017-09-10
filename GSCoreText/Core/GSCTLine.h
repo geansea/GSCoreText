@@ -11,11 +11,13 @@
 @interface GSCTLine : NSObject
 
 @property (assign) NSRange range;
-@property (copy)   NSString *string;
+@property (copy)   NSAttributedString *string;
 @property (copy)   NSArray<GSCTGlyph *> *glyphs;
 @property (assign) CGPoint origin;
 @property (assign) CGRect rect;
 @property (assign) CGRect usedRect;
 @property (assign) BOOL vertical;
+
+- (void)drawInContext:(CGContextRef)context;
 
 @end

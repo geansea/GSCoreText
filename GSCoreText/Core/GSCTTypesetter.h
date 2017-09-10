@@ -10,10 +10,10 @@
 
 @interface GSCTTypesetter : NSObject
 
-@property (assign) CGFloat fontSize;             // base font size
-@property (assign) CGFloat indent;               // em, default 0
-@property (assign) NSTextAlignment alignment;    // default align left
-@property (assign) CGFloat puncCompressRate;     // [0.5, 1], default 1 for no compress
+@property (strong) GSFont *font;                // base font, default system font
+@property (assign) CGFloat indent;              // em, default 0
+@property (assign) NSTextAlignment alignment;   // default align left
+@property (assign) CGFloat puncCompressRate;    // [0.5, 1], default 1 for no compress
 
 - (instancetype)initWithString:(NSAttributedString *)attributedString;
 - (NSAttributedString *)attributedString;

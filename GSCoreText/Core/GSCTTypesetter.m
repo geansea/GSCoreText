@@ -23,13 +23,16 @@
 
 - (instancetype)initWithString:(NSAttributedString *)attributedString {
     if (self = [super init]) {
+        self.font = [GSFont systemFontOfSize:GSFont.systemFontSize];
+        self.indent = 0;
+        self.alignment = NSTextAlignmentLeft;
+        self.puncCompressRate = 1;
         self.utils = [[GSCTUtils alloc] init];
         self.attributedString = attributedString;
         [self createLayoutString];
         _ctTypesetter = CTTypesetterCreateWithAttributedString((__bridge CFAttributedStringRef)_layoutString);
     }
     return self;
-    
 }
 
 - (void)dealloc {
@@ -42,6 +45,7 @@
     CFIndex length = CTTypesetterSuggestClusterBreak(_ctTypesetter, startIndex, tryWidth);
     CTLineRef ctLine = CTTypesetterCreateLine(_ctTypesetter, CFRangeMake(startIndex, length));
     NSArray<GSCTGlyph *> *tryGlyphs = [_utils glyphsFromCTLine:ctLine string:_layoutString.string vertical:NO];
+    CFRelease(ctLine);
     
     [self compressGlyphs:tryGlyphs];
     
@@ -70,7 +74,7 @@
     }
     GSCTLine *line = [[GSCTLine alloc] init];
     line.range = lineRange;
-    line.string = [_layoutString.string substringWithRange:line.range];
+    line.string = [_attributedString attributedSubstringFromRange:line.range];
     line.glyphs = glyphs;
     line.origin = CGPointZero;
     line.rect = CGRectMake(0, lineTop, width, lineBottom - lineTop);
@@ -84,10 +88,14 @@
 - (void)createLayoutString {
     self.layoutString = [[NSMutableAttributedString alloc] initWithString:_attributedString.string];
     NSRange totalRange = NSMakeRange(0, _layoutString.length);
-    CTFontRef font = (__bridge CTFontRef)[GSFont systemFontOfSize:_fontSize];
-    [_layoutString addAttribute:(__bridge NSString *)kCTFontAttributeName value:(__bridge id)font range:totalRange];
+    CTFontRef baseCTFont = (__bridge CTFontRef)_font;
+    [_layoutString addAttribute:(__bridge NSString *)kCTFontAttributeName value:(__bridge id)baseCTFont range:totalRange];
     [_attributedString enumerateAttributesInRange:totalRange options:0 usingBlock:^(NSDictionary<NSString *, id> *attrs, NSRange range, BOOL *stop) {
-        ;
+        GSFont *font = [attrs objectForKey:NSFontAttributeName];
+        if (font && [font isKindOfClass:[GSFont class]]) {
+            CTFontRef ctFont = (__bridge CTFontRef)font;
+            [_layoutString addAttribute:(__bridge NSString *)kCTFontAttributeName value:(__bridge id)ctFont range:range];
+        }
     }];
 }
 

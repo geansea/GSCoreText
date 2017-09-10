@@ -12,7 +12,7 @@
 @interface GSCTUtils : NSObject
 
 - (GSCTLine *)lineFromCTLine:(CTLineRef)ctLine
-                      string:(NSString *)string
+            attributedString:(NSAttributedString *)attributedString
                     vertical:(BOOL)vertical;
 
 - (NSArray<GSCTGlyph *> *)glyphsFromCTLine:(CTLineRef)ctLine

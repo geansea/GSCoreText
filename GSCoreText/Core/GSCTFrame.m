@@ -16,4 +16,8 @@
     return self;
 }
 
+- (void)drawInContext:(CGContextRef)context {
+    
+}
+
 @end
