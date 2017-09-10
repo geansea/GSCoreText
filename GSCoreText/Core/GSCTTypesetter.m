@@ -95,7 +95,7 @@
         lineOrigin.x += CGRectGetMinX(rect);
         lineOrigin.y += lineTop - CGRectGetMinY(line.rect);
         line.origin = lineOrigin;
-        lineTop = CGRectGetMaxY(line.rect);
+        lineTop += CGRectGetHeight(line.rect);
         if (lineTop > CGRectGetMaxY(rect)) {
             break;
         }

@@ -7,6 +7,7 @@
 //
 
 #import "GSCTLine.h"
+#import <CoreText/CoreText.h>
 
 @implementation GSCTLine
 
@@ -18,10 +19,11 @@
 
 - (void)drawInContext:(CGContextRef)context {
     CGContextSetTextPosition(context, _origin.x, _origin.y);
+    //CGContextSetTextMatrix(context, CGAffineTransformMakeScale(1.0, -1.0));
     for (GSCTGlyph *glyph in _glyphs) {
-        NSDictionary<NSString *, id> *attributes = [_string attributesAtIndex:glyph.range.location effectiveRange:NULL];
-        GSColor *color = [attributes objectForKey:NSForegroundColorAttributeName];
-        [color isEqualTo:nil];
+        NSUInteger glyphLocation = glyph.range.location - _range.location;
+        NSDictionary<NSString *, id> *attributes = [_string attributesAtIndex:glyphLocation effectiveRange:NULL];
+        //GSColor *color = [attributes objectForKey:NSForegroundColorAttributeName];
         CTFontRef ctFont = (__bridge CTFontRef)glyph.font;
         CGGlyph cgGlyph = glyph.glyph;
         CGPoint pos = glyph.drawPos;

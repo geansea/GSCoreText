@@ -56,13 +56,13 @@
 - (NSArray<GSCTGlyph *> *)glyphsFromCTLine:(CTLineRef)ctLine
                                     string:(NSString *)string
                                   vertical:(BOOL)vertical {
-    CFRange lineRange = CTLineGetStringRange(ctLine);
     CFIndex glyphCount = CTLineGetGlyphCount(ctLine);
     NSMutableArray<GSCTGlyph *> *lineGlyphs = [NSMutableArray arrayWithCapacity:glyphCount];
     CFArrayRef runs = CTLineGetGlyphRuns(ctLine);
     for (CFIndex idx = 0; idx < CFArrayGetCount(runs); ++idx) {
         CTRunRef run = (CTRunRef)CFArrayGetValueAtIndex(runs, idx);
         // Run infos
+        CFRange runRange = CTRunGetStringRange(run);
         CGFloat runAscent = 0;
         CGFloat runDescent = 0;
         CTRunGetTypographicBounds(run, CFRangeMake(0, 0), &runAscent, &runDescent, NULL);
@@ -72,9 +72,9 @@
         const CGSize *advances = [self advancesForRun:run];
         // Run attributes
         CFDictionaryRef attributes = CTRunGetAttributes(run);
-        CTFontRef font = CFDictionaryGetValue(attributes, kCTFontNameAttribute);
+        CTFontRef font = CFDictionaryGetValue(attributes, kCTFontAttributeName);
         for (CFIndex i = 0; i < CTRunGetGlyphCount(run); ++i) {
-            CFIndex endIndex = lineRange.location + lineRange.length;
+            CFIndex endIndex = runRange.location + runRange.length;
             if (i + 1 < CTRunGetGlyphCount(run)) {
                 endIndex = indices[i + 1];
             }

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		291E4BD51F60442200586F6A /* GSCTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 291E4BD41F60442200586F6A /* GSCTUtils.m */; };
 		291E4BD61F60442200586F6A /* GSCTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 291E4BD41F60442200586F6A /* GSCTUtils.m */; };
+		291E4BD91F65976F00586F6A /* GSCTFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 291E4BD81F65976F00586F6A /* GSCTFrameView.m */; };
 		29F5BE081F401FA7000D2AA0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F5BE071F401FA7000D2AA0 /* main.m */; };
 		29F5BE0B1F401FA7000D2AA0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F5BE0A1F401FA7000D2AA0 /* AppDelegate.m */; };
 		29F5BE0E1F401FA7000D2AA0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F5BE0D1F401FA7000D2AA0 /* ViewController.m */; };
@@ -35,6 +36,8 @@
 /* Begin PBXFileReference section */
 		291E4BD31F60442200586F6A /* GSCTUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GSCTUtils.h; path = GSCoreText/Core/GSCTUtils.h; sourceTree = "<group>"; };
 		291E4BD41F60442200586F6A /* GSCTUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GSCTUtils.m; path = GSCoreText/Core/GSCTUtils.m; sourceTree = "<group>"; };
+		291E4BD71F65976F00586F6A /* GSCTFrameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSCTFrameView.h; sourceTree = "<group>"; };
+		291E4BD81F65976F00586F6A /* GSCTFrameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSCTFrameView.m; sourceTree = "<group>"; };
 		29F5BDFC1F3FFD71000D2AA0 /* GSCoreText.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GSCoreText.h; path = GSCoreText/GSCoreText.h; sourceTree = "<group>"; };
 		29F5BDFD1F401F22000D2AA0 /* GSCTDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GSCTDefines.h; path = GSCoreText/GSCTDefines.h; sourceTree = "<group>"; };
 		29F5BE031F401FA7000D2AA0 /* GSCoreTextDemo_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GSCoreTextDemo_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,6 +144,8 @@
 				29F5BE0A1F401FA7000D2AA0 /* AppDelegate.m */,
 				29F5BE0C1F401FA7000D2AA0 /* ViewController.h */,
 				29F5BE0D1F401FA7000D2AA0 /* ViewController.m */,
+				291E4BD71F65976F00586F6A /* GSCTFrameView.h */,
+				291E4BD81F65976F00586F6A /* GSCTFrameView.m */,
 				29F5BE0F1F401FA7000D2AA0 /* Main.storyboard */,
 				29F5BE121F401FA7000D2AA0 /* Assets.xcassets */,
 				29F5BE141F401FA7000D2AA0 /* LaunchScreen.storyboard */,
@@ -291,6 +296,7 @@
 				29F5BE081F401FA7000D2AA0 /* main.m in Sources */,
 				932827961F5F93E2005CFC7F /* GSCTFrame.m in Sources */,
 				9328279A1F5F945D005CFC7F /* GSCTFramesetter.m in Sources */,
+				291E4BD91F65976F00586F6A /* GSCTFrameView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
