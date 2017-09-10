@@ -17,5 +17,6 @@
 @property (assign) BOOL vertical;
 
 - (void)drawInContext:(CGContextRef)context;
+- (void)drawSublineInContext:(CGContextRef)context;
 
 @end

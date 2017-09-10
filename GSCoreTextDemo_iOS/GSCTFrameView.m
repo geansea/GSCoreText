@@ -18,7 +18,7 @@
         
         CGContextSetTextMatrix(context, CGAffineTransformMakeScale(1.0, -1.0));
         [_gsFrame drawInContext:context];
-        //[_gsFrame drawSublineInContext:context];
+        [_gsFrame drawSublineInContext:context];
         
         CGContextRestoreGState(context);
     }
