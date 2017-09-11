@@ -46,9 +46,12 @@
     line.range = NSMakeRange(lineRange.location, lineRange.length);
     line.string = [attributedString attributedSubstringFromRange:line.range];
     line.glyphs = [self glyphsFromCTLine:ctLine string:attributedString.string vertical:vertical];
-    line.origin = CGPointZero;
-    line.rect = CGRectMake(0, -lineAscent, lineWidth, lineAscent + lineDescent);
-    line.usedRect = line.rect;
+    line.x = 0;
+    line.y = 0;
+    line.ascent = lineAscent;
+    line.descent = lineDescent;
+    line.width = lineWidth;
+    line.usedWidth = lineWidth;
     line.vertical = vertical;
     return line;
 }

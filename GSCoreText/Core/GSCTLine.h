@@ -13,11 +13,16 @@
 @property (assign) NSRange range;
 @property (copy)   NSAttributedString *string;
 @property (copy)   NSArray<GSCTGlyph *> *glyphs;
-@property (assign) CGPoint origin;
-@property (assign) CGRect rect;
-@property (assign) CGRect usedRect;
+@property (assign) CGFloat x;
+@property (assign) CGFloat y;
+@property (assign) CGFloat ascent;
+@property (assign) CGFloat descent;
+@property (assign) CGFloat width;
+@property (assign) CGFloat usedWidth;
 @property (assign) BOOL vertical;
 
-- (void)drawInContext:(CGContextRef)context;
+- (CGRect)rect;
+- (CGRect)usedRect;
+- (void)drawInContext:(CGContextRef)context move:(CGPoint)move;
 
 @end

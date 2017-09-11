@@ -18,7 +18,7 @@
 
 - (void)drawInContext:(CGContextRef)context {
     for (GSCTLine *line in _lines) {
-        [line drawInContext:context];
+        [line drawInContext:context move:_rect.origin];
     }
 }
 
@@ -33,10 +33,9 @@
     // Lines
     CGContextSetRGBStrokeColor(context, 0, 1, 0, 0.5);
     for (GSCTLine *line in _lines) {
-        CGPoint origin = line.origin;
         CGRect bound = line.rect;
-        bound.origin.x += origin.x;
-        bound.origin.y += origin.y;
+        bound.origin.x += _rect.origin.x;
+        bound.origin.y += _rect.origin.y;
         CGContextStrokeRectWithWidth(context, bound, 1);
     }
 #endif
@@ -45,11 +44,10 @@
     // Glyphs
     CGContextSetRGBStrokeColor(context, 0, 0, 1, 0.2);
     for (GSCTLine *line in _lines) {
-        CGPoint origin = line.origin;
         for (GSCTGlyph *glyph in line.glyphs) {
             CGRect bound = glyph.usedRect;
-            bound.origin.x += origin.x;
-            bound.origin.y += origin.y;
+            bound.origin.x += _rect.origin.x + line.x;
+            bound.origin.y += _rect.origin.x + line.y;
             CGContextStrokeRectWithWidth(context, bound, 1);
         }
     }

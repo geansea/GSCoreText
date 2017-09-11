@@ -57,29 +57,30 @@
     
     // Line infos
     NSRange lineRange = NSMakeRange(0, 0);
-    CGFloat lineLeft = 0;
-    CGFloat lineRight = 0;
+    CGFloat lineWidth = 0;
     if (glyphs.count > 0) {
         GSCTGlyph *first = glyphs.firstObject;
         GSCTGlyph *last = glyphs.lastObject;
         lineRange.location = first.range.location;
         lineRange.length = NSMaxRange(last.range) - lineRange.location;
-        lineLeft = CGRectGetMinX(first.usedRect);
-        lineRight = CGRectGetMaxX(last.usedRect);
+        lineWidth = CGRectGetMaxX(last.usedRect) - lineOrigin.x;
     }
-    CGFloat lineTop = 0;
-    CGFloat lineBottom = 0;
+    CGFloat lineAscent = 0;
+    CGFloat lineDescent = 0;
     for (GSCTGlyph *glyph in glyphs) {
-        lineTop = MIN(lineTop, CGRectGetMinY(glyph.usedRect));
-        lineBottom = MAX(lineBottom, CGRectGetMaxY(glyph.usedRect));
+        lineAscent = MAX(lineAscent, glyph.ascent);
+        lineDescent = MAX(lineDescent, glyph.descent);
     }
     GSCTLine *line = [[GSCTLine alloc] init];
     line.range = lineRange;
     line.string = [_attributedString attributedSubstringFromRange:line.range];
     line.glyphs = glyphs;
-    line.origin = lineOrigin;
-    line.rect = CGRectMake(0, lineTop, width, lineBottom - lineTop);
-    line.usedRect = CGRectMake(lineLeft, lineTop, lineRight - lineLeft, lineBottom - lineTop);
+    line.x = lineOrigin.x;
+    line.y = lineOrigin.y;
+    line.ascent = lineAscent;
+    line.descent = lineDescent;
+    line.width = width;
+    line.usedWidth = lineWidth;
     line.vertical = NO;
     return line;
 }
@@ -88,15 +89,12 @@
     // Lines
     NSMutableArray<GSCTLine *> *lines = [NSMutableArray array];
     NSUInteger lineLocation = startIndex;
-    CGFloat lineTop = CGRectGetMinY(rect);
+    CGFloat lineTop = 0;
     while (lineLocation < _layoutString.length) {
         GSCTLine *line = [self createLineWithWidth:CGRectGetWidth(rect) startIndex:lineLocation];
-        CGPoint lineOrigin = line.origin;
-        lineOrigin.x += CGRectGetMinX(rect);
-        lineOrigin.y += lineTop - CGRectGetMinY(line.rect);
-        line.origin = lineOrigin;
-        lineTop += CGRectGetHeight(line.rect);
-        if (lineTop > CGRectGetMaxY(rect)) {
+        line.y = lineTop + line.ascent;
+        lineTop = line.y + line.descent;
+        if (lineTop > CGRectGetHeight(rect)) {
             break;
         }
         
@@ -111,15 +109,13 @@
     
     // Frame infos
     NSRange frameRange = NSMakeRange(0, 0);
-    CGFloat frameTop = 0;
-    CGFloat frameBottom = 0;
+    CGFloat frameHeight = 0;
     if (lines.count > 0) {
         GSCTLine *first = lines.firstObject;
         GSCTLine *last = lines.lastObject;
         frameRange.location = first.range.location;
         frameRange.length = NSMaxRange(last.range) - frameRange.location;
-        frameTop = CGRectGetMinY(first.usedRect);
-        frameBottom = CGRectGetMaxY(last.usedRect);
+        frameHeight = CGRectGetMaxY(last.usedRect);
     }
     CGFloat frameLeft = 0;
     CGFloat frameRight = 0;
@@ -127,11 +123,13 @@
         frameLeft = MIN(frameLeft, CGRectGetMinX(line.usedRect));
         frameRight = MAX(frameRight, CGRectGetMaxX(line.usedRect));
     }
+    CGRect frameRect = rect;
+    frameRect.size.height = frameHeight;
     GSCTFrame *frame = [[GSCTFrame alloc] init];
     frame.range = frameRange;
     frame.lines = lines;
-    frame.rect = CGRectMake(CGRectGetMinX(rect), frameTop, CGRectGetWidth(rect), frameBottom - frameTop);
-    frame.usedRect = CGRectMake(frameLeft, frameTop, frameRight - frameLeft, frameBottom - frameTop);
+    frame.rect = frameRect;
+    frame.usedRect = CGRectMake(frameLeft, CGRectGetMinY(rect), frameRight - frameLeft, frameHeight);
     frame.vertical = NO;
     return frame;
 }
