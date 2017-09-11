@@ -44,13 +44,13 @@
     CGFloat tryWidth = width * 1.3;
     CFIndex length = CTTypesetterSuggestClusterBreak(_ctTypesetter, startIndex, tryWidth);
     CTLineRef ctLine = CTTypesetterCreateLine(_ctTypesetter, CFRangeMake(startIndex, length));
-    NSArray<GSCTGlyph *> *tryGlyphs = [_utils glyphsFromCTLine:ctLine string:_layoutString.string vertical:NO];
+    NSArray<GSCTGlyph *> *glyphs = [_utils glyphsFromCTLine:ctLine string:_layoutString.string vertical:NO];
     CFRelease(ctLine);
     
-    [self compressGlyphs:tryGlyphs];
+    [self compressGlyphs:glyphs];
     
-    NSUInteger breakPos = [self breakPosForGlyphs:tryGlyphs withWidth:width];
-    NSArray<GSCTGlyph *> *glyphs = [tryGlyphs subarrayWithRange:NSMakeRange(0, breakPos)];
+    NSUInteger breakPos = [self breakPosForGlyphs:glyphs withWidth:width];
+    glyphs = [glyphs subarrayWithRange:NSMakeRange(0, breakPos)];
     
     [self adjustEndGlyphs:glyphs];
     CGPoint lineOrigin = [self adjustGlyphs:glyphs withWidth:width];
@@ -139,8 +139,7 @@
 - (void)createLayoutString {
     self.layoutString = [[NSMutableAttributedString alloc] initWithString:_attributedString.string];
     NSRange totalRange = NSMakeRange(0, _layoutString.length);
-    CTFontRef baseCTFont = (__bridge CTFontRef)_font;
-    [_layoutString addAttribute:(__bridge NSString *)kCTFontAttributeName value:(__bridge id)baseCTFont range:totalRange];
+    [_layoutString addAttribute:(__bridge NSString *)kCTFontAttributeName value:_font range:totalRange];
     [_attributedString enumerateAttributesInRange:totalRange options:0 usingBlock:^(NSDictionary<NSString *, id> *attrs, NSRange range, BOOL *stop) {
         GSFont *font = [attrs objectForKey:NSFontAttributeName];
         if (font && [font isKindOfClass:[GSFont class]]) {

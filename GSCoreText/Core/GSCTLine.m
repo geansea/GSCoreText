@@ -32,7 +32,7 @@
 }
 
 - (void)drawInContext:(CGContextRef)context move:(CGPoint)move {
-    //CGContextSetTextMatrix(context, CGAffineTransformMakeScale(1.0, -1.0));
+    CGContextSetTextMatrix(context, CGAffineTransformMakeScale(1.0, -1.0));
     CGContextSetTextPosition(context, _x + move.x, _y + move.y);
     for (GSCTGlyph *glyph in _glyphs) {
         //NSUInteger glyphLocation = glyph.range.location - _range.location;

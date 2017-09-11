@@ -31,6 +31,9 @@
     gsTypesetter.lineSpacing = 0.2;
     gsTypesetter.paragraphSpacing = 0.4;
     GSCTFrame *gsFrame = [gsTypesetter createFrameWithRect:CGRectInset(gsView.bounds, 10, 10) startIndex:0];
+    //for (int i = 0; i < 1000; ++i) {
+    //    gsFrame = [gsTypesetter createFrameWithRect:CGRectInset(gsView.bounds, 10, 10) startIndex:0];
+    //}
     gsView.gsFrame = gsFrame;
 }
 
