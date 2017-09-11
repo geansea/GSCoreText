@@ -99,9 +99,10 @@
     NSRange totalRange = NSMakeRange(0, _layoutString.length);
     // Paragraph style
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.firstLineHeadIndent = _font.pointSize * _indent;
     paragraphStyle.lineSpacing = _font.pointSize * _lineSpacing;
     paragraphStyle.paragraphSpacing = _font.pointSize * _paragraphSpacing;
+    paragraphStyle.alignment = _alignment;
+    paragraphStyle.firstLineHeadIndent = _font.pointSize * _indent;
     [_layoutString addAttribute:(__bridge NSString *)kCTParagraphStyleAttributeName value:paragraphStyle range:totalRange];
     // Font
     [_layoutString addAttribute:(__bridge NSString *)kCTFontAttributeName value:_font range:totalRange];

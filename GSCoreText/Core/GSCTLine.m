@@ -18,10 +18,17 @@
 }
 
 - (CGRect)usedRect {
-    return CGRectMake(_x,
-                      _y - _ascent,
-                      _usedWidth,
-                      _ascent + _descent);
+    if (_vertical) {
+        return CGRectMake(_x - _descent,
+                          _y,
+                          _ascent + _descent,
+                          _usedWidth);
+    } else {
+        return CGRectMake(_x,
+                          _y - _ascent,
+                          _usedWidth,
+                          _ascent + _descent);
+    }
 }
 
 - (void)drawInContext:(CGContextRef)context {

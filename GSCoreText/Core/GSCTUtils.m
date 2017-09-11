@@ -64,6 +64,7 @@
     for (CFIndex idx = 0; idx < CFArrayGetCount(runs); ++idx) {
         CTRunRef run = (CTRunRef)CFArrayGetValueAtIndex(runs, idx);
         // Run infos
+        CFIndex glyphCount = CTRunGetGlyphCount(run);
         CFRange runRange = CTRunGetStringRange(run);
         CGFloat runAscent = 0;
         CGFloat runDescent = 0;
@@ -75,9 +76,15 @@
         // Run attributes
         CFDictionaryRef attributes = CTRunGetAttributes(run);
         CTFontRef font = CFDictionaryGetValue(attributes, kCTFontAttributeName);
-        for (CFIndex i = 0; i < CTRunGetGlyphCount(run); ++i) {
+        if (vertical) {
+            CGRect fontBounding = CTFontGetBoundingBox(font);
+            CGFloat heightScale = CTFontGetSize(font) / CGRectGetHeight(fontBounding);
+            runAscent = CGRectGetMaxY(fontBounding) * heightScale;
+            runDescent = -CGRectGetMinY(fontBounding) * heightScale;
+        }
+        for (CFIndex i = 0; i < glyphCount; ++i) {
             CFIndex endIndex = runRange.location + runRange.length;
-            if (i + 1 < CTRunGetGlyphCount(run)) {
+            if (i + 1 < glyphCount) {
                 endIndex = indices[i + 1];
             }
             GSCTGlyph *glyph = [[GSCTGlyph alloc] init];
@@ -89,8 +96,11 @@
             glyph.y = -positions[i].y;
             glyph.ascent = runAscent;
             glyph.descent = runDescent;
-            glyph.width = advances[i].width;
-            glyph.vertical = vertical;
+            if (vertical) {
+                glyph.width = -glyph.x * 2;
+            } else {
+                glyph.width = advances[i].width;
+            }
             [lineGlyphs addObject:glyph];
         }
     }

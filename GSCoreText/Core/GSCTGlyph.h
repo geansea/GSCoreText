@@ -21,7 +21,6 @@
 @property (assign) CGFloat width;
 @property (assign) CGFloat compressLeft;
 @property (assign) CGFloat compressRight;
-@property (assign) BOOL vertical;
 
 - (unichar)utf16Code;
 - (CGRect)rect;
