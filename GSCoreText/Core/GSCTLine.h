@@ -17,11 +17,9 @@
 @property (assign) CGFloat y;
 @property (assign) CGFloat ascent;
 @property (assign) CGFloat descent;
-@property (assign) CGFloat width;
 @property (assign) CGFloat usedWidth;
 @property (assign) BOOL vertical;
 
-- (CGRect)rect;
 - (CGRect)usedRect;
 - (void)drawInContext:(CGContextRef)context;
 

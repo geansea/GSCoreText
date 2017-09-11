@@ -79,7 +79,6 @@
     line.y = lineOrigin.y;
     line.ascent = lineAscent;
     line.descent = lineDescent;
-    line.width = width;
     line.usedWidth = lineWidth;
     line.vertical = NO;
     return line;
@@ -109,18 +108,18 @@
     }
     
     // Frame infos
-    NSRange frameRange = NSMakeRange(0, 0);
+    NSRange frameRange = NSMakeRange(startIndex, 0);
     CGRect frameRect = rect;
     CGFloat frameHeight = 0;
-    if (lines.count > 0) {
-        GSCTLine *first = lines.firstObject;
-        GSCTLine *last = lines.lastObject;
-        frameRange.location = first.range.location;
-        frameRange.length = NSMaxRange(last.range) - frameRange.location;
-        frameHeight = CGRectGetMaxY(last.usedRect);
-    }
     CGFloat frameLeft = 0;
     CGFloat frameRight = 0;
+    if (lines.count > 0) {
+        GSCTLine *last = lines.lastObject;
+        frameRange.length = NSMaxRange(last.range) - frameRange.location;
+        frameHeight = CGRectGetMaxY(last.usedRect) - CGRectGetMinY(frameRect);
+        frameLeft = CGRectGetMinX(last.usedRect);
+        frameRight = CGRectGetMaxX(last.usedRect);
+    }
     for (GSCTLine *line in lines) {
         frameLeft = MIN(frameLeft, CGRectGetMinX(line.usedRect));
         frameRight = MAX(frameRight, CGRectGetMaxX(line.usedRect));

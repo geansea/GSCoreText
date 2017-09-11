@@ -50,7 +50,6 @@
     line.y = 0;
     line.ascent = lineAscent;
     line.descent = lineDescent;
-    line.width = lineWidth;
     line.usedWidth = lineWidth;
     line.vertical = vertical;
     return line;

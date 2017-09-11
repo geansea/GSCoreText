@@ -26,14 +26,14 @@
 #if 1
     // Frame
     CGContextSetRGBStrokeColor(context, 1, 0, 0, 0.5);
-    CGContextStrokeRectWithWidth(context, _rect, 1);
+    CGContextStrokeRectWithWidth(context, _usedRect, 1);
 #endif
     
 #if 1
     // Lines
     CGContextSetRGBStrokeColor(context, 0, 1, 0, 0.5);
     for (GSCTLine *line in _lines) {
-        CGContextStrokeRectWithWidth(context, line.rect, 1);
+        CGContextStrokeRectWithWidth(context, line.usedRect, 1);
     }
 #endif
     
