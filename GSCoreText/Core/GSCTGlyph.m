@@ -20,10 +20,6 @@
     return [_string characterAtIndex:0];
 }
 
-- (CGPoint)drawPos {
-    return CGPointMake(floor(_x), floor(_y));
-}
-
 - (CGRect)rect {
     return CGRectMake(_x,
                       _y - _ascent,

@@ -24,7 +24,6 @@
 @property (assign) BOOL vertical;
 
 - (unichar)utf16Code;
-- (CGPoint)drawPos;
 - (CGRect)rect;
 - (CGRect)usedRect;
 

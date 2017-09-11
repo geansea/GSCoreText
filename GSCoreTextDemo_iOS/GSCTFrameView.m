@@ -17,7 +17,7 @@
         CGContextSaveGState(context);
         
         [_gsFrame drawInContext:context];
-        //[_gsFrame drawSublineInContext:context];
+        [_gsFrame drawSublineInContext:context];
         
         CGContextRestoreGState(context);
     }

@@ -87,7 +87,7 @@
             glyph.glyph = glyphs[i];
             glyph.font = (__bridge GSFont *)font;
             glyph.x = positions[i].x;
-            glyph.y = positions[i].y;
+            glyph.y = -positions[i].y;
             glyph.ascent = runAscent;
             glyph.descent = runDescent;
             glyph.width = advances[i].width;

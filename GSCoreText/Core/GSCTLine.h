@@ -23,6 +23,6 @@
 
 - (CGRect)rect;
 - (CGRect)usedRect;
-- (void)drawInContext:(CGContextRef)context move:(CGPoint)move;
+- (void)drawInContext:(CGContextRef)context;
 
 @end

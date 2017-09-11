@@ -89,10 +89,11 @@
     // Lines
     NSMutableArray<GSCTLine *> *lines = [NSMutableArray array];
     NSUInteger lineLocation = startIndex;
-    CGFloat lineTop = 0;
+    CGFloat lineTop = CGRectGetMinY(rect);
     while (lineLocation < _layoutString.length) {
         GSCTLine *line = [self createLineWithWidth:CGRectGetWidth(rect) startIndex:lineLocation];
-        line.y = lineTop + line.ascent;
+        line.x += CGRectGetMinX(rect);
+        line.y += lineTop + line.ascent;
         lineTop = line.y + line.descent;
         if (lineTop > CGRectGetHeight(rect)) {
             break;
@@ -109,6 +110,7 @@
     
     // Frame infos
     NSRange frameRange = NSMakeRange(0, 0);
+    CGRect frameRect = rect;
     CGFloat frameHeight = 0;
     if (lines.count > 0) {
         GSCTLine *first = lines.firstObject;
@@ -123,13 +125,11 @@
         frameLeft = MIN(frameLeft, CGRectGetMinX(line.usedRect));
         frameRight = MAX(frameRight, CGRectGetMaxX(line.usedRect));
     }
-    CGRect frameRect = rect;
-    frameRect.size.height = frameHeight;
     GSCTFrame *frame = [[GSCTFrame alloc] init];
     frame.range = frameRange;
     frame.lines = lines;
     frame.rect = frameRect;
-    frame.usedRect = CGRectMake(frameLeft, CGRectGetMinY(rect), frameRight - frameLeft, frameHeight);
+    frame.usedRect = CGRectMake(frameLeft, CGRectGetMinY(frameRect), frameRight - frameLeft, frameHeight);
     frame.vertical = NO;
     return frame;
 }
