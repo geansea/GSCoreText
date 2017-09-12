@@ -34,9 +34,10 @@
 - (void)drawInContext:(CGContextRef)context {
     CGContextSetTextMatrix(context, CGAffineTransformMakeScale(1.0, -1.0));
     for (GSCTGlyph *glyph in _glyphs) {
-        //NSUInteger glyphLocation = glyph.range.location - _range.location;
-        //NSDictionary<NSString *, id> *attributes = [_string attributesAtIndex:glyphLocation effectiveRange:NULL];
-        //GSColor *color = [attributes objectForKey:NSForegroundColorAttributeName];
+        NSUInteger glyphLocation = glyph.range.location - _range.location;
+        NSDictionary<NSString *, id> *attributes = [_string attributesAtIndex:glyphLocation effectiveRange:NULL];
+        GSColor *color = attributes[NSForegroundColorAttributeName] ? : [GSColor blackColor];
+        CGContextSetFillColorWithColor(context, color.CGColor);
         CTFontRef ctFont = (__bridge CTFontRef)glyph.font;
         CGGlyph cgGlyph = glyph.glyph;
         CGContextSetTextPosition(context, floor(_x + glyph.x), floor(_y + glyph.y));
