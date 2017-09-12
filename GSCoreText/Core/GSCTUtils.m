@@ -94,11 +94,14 @@
             glyph.font = (__bridge GSFont *)font;
             glyph.x = positions[i].x;
             glyph.y = -positions[i].y;
-            glyph.ascent = runAscent;
-            glyph.descent = runDescent;
             if (vertical) {
+                BOOL isNewline = [self isNewline:glyph.utf16Code];
+                glyph.ascent = isNewline ? 0 : runAscent;
+                glyph.descent = isNewline ? 0 : runDescent;
                 glyph.width = -glyph.x * 2;
             } else {
+                glyph.ascent = runAscent;
+                glyph.descent = runDescent;
                 glyph.width = advances[i].width;
             }
             [lineGlyphs addObject:glyph];
