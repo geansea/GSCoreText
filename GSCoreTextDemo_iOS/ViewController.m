@@ -41,7 +41,7 @@
     //for (int i = 0; i < 1000; ++i) {
     //    gsFrame = [gsTypesetter createFrameWithRect:CGRectInset(gsView.bounds, 10, 10) startIndex:0];
     //}
-#elif 1
+#elif 0
     GSCTTypesetter *gsTypesetter = [[GSCTTypesetter alloc] init];
     gsTypesetter.attributedString = string;
     gsTypesetter.font = [UIFont systemFontOfSize:16];
@@ -53,32 +53,54 @@
     gsTypesetter.vertical = YES;
     [gsTypesetter prepare];
     GSCTFrame *gsFrame = [gsTypesetter createFrameWithRect:CGRectInset(_gsView.bounds, 10, 10) startIndex:0];
-    //for (int i = 0; i < 1000; ++i) {
-    //    gsFrame = [gsTypesetter createFrameWithRect:CGRectInset(gsView.bounds, 10, 10) startIndex:0];
-    //}
 #elif 0
-    GSCTFramesetter *gsFramesetter = [[GSCTFramesetter alloc] initWithString:string];
+    GSCTFramesetter *gsFramesetter = [[GSCTFramesetter alloc] init];
+    gsFramesetter.attributedString = string;
     gsFramesetter.font = [UIFont systemFontOfSize:16];
+    gsFramesetter.indent = 2;
+    gsFramesetter.alignment = NSTextAlignmentRight;
+    gsFramesetter.lineSpacing = 0.2;
+    gsFramesetter.paragraphSpacing = 0.4;
+    [gsFramesetter prepare];
+    GSCTFrame *gsFrame = [gsFramesetter createFrameWithRect:CGRectInset(_gsView.bounds, 10, 10) startIndex:0];
+#elif 0
+    GSCTFramesetter *gsFramesetter = [[GSCTFramesetter alloc] init];
+    gsFramesetter.attributedString = string;
+    gsFramesetter.font = [UIFont systemFontOfSize:16];
+    gsFramesetter.indent = 2;
+    gsFramesetter.alignment = NSTextAlignmentLeft;
+    gsFramesetter.lineSpacing = 0.2;
+    gsFramesetter.paragraphSpacing = 0.4;
+    gsFramesetter.vertical = YES;
+    [gsFramesetter prepare];
+    GSCTFrame *gsFrame = [gsFramesetter createFrameWithRect:CGRectInset(_gsView.bounds, 10, 10) startIndex:0];
+#elif 0
+    GSCTFramesetter *gsFramesetter = [[GSCTFramesetter alloc] init];
+    gsFramesetter.attributedString = string;
+    gsFramesetter.font = [UIFont systemFontOfSize:16];
+    gsFramesetter.indent = 0;
     gsFramesetter.alignment = NSTextAlignmentJustified;
     gsFramesetter.lineSpacing = 0.2;
     gsFramesetter.paragraphSpacing = 0.4;
-    GSCTFrame *gsFrame = [gsFramesetter createFrameWithRect:CGRectInset(gsView.bounds, 10, 10) startIndex:0];
-#elif 1
-    GSCTFramesetter *gsFramesetter = [[GSCTFramesetter alloc] initWithString:string];
+    [gsFramesetter prepare];
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectInset(_gsView.bounds, 10, 10)
+                                               byRoundingCorners:(UIRectCornerTopLeft | UIRectCornerBottomRight)
+                                                     cornerRadii:CGSizeMake(200, 200)];
+    GSCTFrame *gsFrame = [gsFramesetter createFrameWithPath:path.CGPath startIndex:0];
+#else
+    GSCTFramesetter *gsFramesetter = [[GSCTFramesetter alloc] init];
+    gsFramesetter.attributedString = string;
     gsFramesetter.font = [UIFont systemFontOfSize:16];
+    gsFramesetter.indent = 0;
     gsFramesetter.alignment = NSTextAlignmentJustified;
     gsFramesetter.lineSpacing = 0.2;
     gsFramesetter.paragraphSpacing = 0.4;
     gsFramesetter.vertical = YES;
-    GSCTFrame *gsFrame = [gsFramesetter createFrameWithRect:CGRectInset(_gsView.bounds, 10, 10) startIndex:0];
-#else
-    GSCTFramesetter *gsFramesetter = [[GSCTFramesetter alloc] initWithString:string];
-    gsFramesetter.font = [UIFont systemFontOfSize:16];
-    gsFramesetter.alignment = NSTextAlignmentJustified;
-    gsFramesetter.puncCompressRate = 0.4;
-    gsFramesetter.lineSpacing = 0.2;
-    gsFramesetter.paragraphSpacing = 0.4;
-    GSCTFrame *gsFrame = [gsFramesetter createFrameWithRect:CGRectInset(gsView.bounds, 10, 10) startIndex:0];
+    [gsFramesetter prepare];
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectInset(_gsView.bounds, 10, 10)
+                                               byRoundingCorners:(UIRectCornerTopLeft | UIRectCornerBottomRight)
+                                                     cornerRadii:CGSizeMake(200, 200)];
+    GSCTFrame *gsFrame = [gsFramesetter createFrameWithPath:path.CGPath startIndex:0];
 #endif
     _gsView.gsFrame = gsFrame;
 }

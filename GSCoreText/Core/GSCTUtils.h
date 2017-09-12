@@ -6,7 +6,7 @@
 //
 //
 
-#import "GSCTLine.h"
+#import "GSCTFrame.h"
 #import <CoreText/CoreText.h>
 
 @interface GSCTUtils : NSObject
@@ -18,6 +18,10 @@
 - (NSArray<GSCTGlyph *> *)glyphsFromCTLine:(CTLineRef)ctLine
                                     string:(NSString *)string
                                   vertical:(BOOL)vertical;
+
+- (GSCTFrame *)horizontalFrameWithLines:(NSArray<GSCTLine *> *)lines rect:(CGRect)rect;
+
+- (GSCTFrame *)verticalFrameWithLines:(NSArray<GSCTLine *> *)lines rect:(CGRect)rect;
 
 - (BOOL)isNewline:(unichar)code;
 

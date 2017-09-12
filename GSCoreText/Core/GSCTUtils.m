@@ -110,6 +110,60 @@
     return lineGlyphs;
 }
 
+- (GSCTFrame *)horizontalFrameWithLines:(NSArray<GSCTLine *> *)lines rect:(CGRect)rect {
+    NSRange frameRange = NSMakeRange(0, 0);
+    CGFloat frameHeight = 0;
+    CGFloat frameLeft = 0;
+    CGFloat frameRight = 0;
+    if (lines.count > 0) {
+        GSCTLine *first = lines.firstObject;
+        GSCTLine *last = lines.lastObject;
+        frameRange.location = first.range.location;
+        frameRange.length = NSMaxRange(last.range) - frameRange.location;
+        frameHeight = CGRectGetMaxY(last.usedRect) - CGRectGetMinY(rect);
+        frameLeft = CGRectGetMinX(first.usedRect);
+        frameRight = CGRectGetMaxX(first.usedRect);
+    }
+    for (GSCTLine *line in lines) {
+        frameLeft = MIN(frameLeft, CGRectGetMinX(line.usedRect));
+        frameRight = MAX(frameRight, CGRectGetMaxX(line.usedRect));
+    }
+    GSCTFrame *frame = [[GSCTFrame alloc] init];
+    frame.range = frameRange;
+    frame.lines = lines;
+    frame.rect = rect;
+    frame.usedRect = CGRectMake(frameLeft, CGRectGetMinY(rect), frameRight - frameLeft, frameHeight);
+    frame.vertical = NO;
+    return frame;
+}
+
+- (GSCTFrame *)verticalFrameWithLines:(NSArray<GSCTLine *> *)lines rect:(CGRect)rect {
+    NSRange frameRange = NSMakeRange(0, 0);
+    CGFloat frameWidth = 0;
+    CGFloat frameTop = 0;
+    CGFloat frameBottom = 0;
+    if (lines.count > 0) {
+        GSCTLine *first = lines.firstObject;
+        GSCTLine *last = lines.lastObject;
+        frameRange.location = first.range.location;
+        frameRange.length = NSMaxRange(last.range) - frameRange.location;
+        frameWidth = CGRectGetMaxX(rect) - CGRectGetMinX(last.usedRect);
+        frameTop = CGRectGetMinY(first.usedRect);
+        frameBottom = CGRectGetMaxY(first.usedRect);
+    }
+    for (GSCTLine *line in lines) {
+        frameTop = MIN(frameTop, CGRectGetMinY(line.usedRect));
+        frameBottom = MAX(frameBottom, CGRectGetMaxY(line.usedRect));
+    }
+    GSCTFrame *frame = [[GSCTFrame alloc] init];
+    frame.range = frameRange;
+    frame.lines = lines;
+    frame.rect = rect;
+    frame.usedRect = CGRectMake(CGRectGetMaxX(rect) - frameWidth, frameTop, frameWidth, frameBottom - frameTop);
+    frame.vertical = YES;
+    return frame;
+}
+
 - (BOOL)isNewline:(unichar)code {
     return ('\r' == code || '\n' == code);
 }

@@ -126,7 +126,6 @@
         return [self createVerticalFrameWithRect:rect startIndex:startIndex];
     }
     
-    // Lines
     NSMutableArray<GSCTLine *> *lines = [NSMutableArray array];
     NSUInteger lineLocation = startIndex;
     CGFloat lineTop = CGRectGetMinY(rect);
@@ -148,29 +147,7 @@
         }
     }
     
-    // Frame infos
-    NSRange frameRange = NSMakeRange(startIndex, 0);
-    CGFloat frameHeight = 0;
-    CGFloat frameLeft = 0;
-    CGFloat frameRight = 0;
-    if (lines.count > 0) {
-        GSCTLine *last = lines.lastObject;
-        frameRange.length = NSMaxRange(last.range) - frameRange.location;
-        frameHeight = CGRectGetMaxY(last.usedRect) - CGRectGetMinY(rect);
-        frameLeft = CGRectGetMinX(last.usedRect);
-        frameRight = CGRectGetMaxX(last.usedRect);
-    }
-    for (GSCTLine *line in lines) {
-        frameLeft = MIN(frameLeft, CGRectGetMinX(line.usedRect));
-        frameRight = MAX(frameRight, CGRectGetMaxX(line.usedRect));
-    }
-    GSCTFrame *frame = [[GSCTFrame alloc] init];
-    frame.range = frameRange;
-    frame.lines = lines;
-    frame.rect = rect;
-    frame.usedRect = CGRectMake(frameLeft, CGRectGetMinY(rect), frameRight - frameLeft, frameHeight);
-    frame.vertical = NO;
-    return frame;
+    return [_utils horizontalFrameWithLines:lines rect:rect];
 }
 
 #pragma mark - Private
@@ -216,7 +193,6 @@
 }
 
 - (GSCTFrame *)createVerticalFrameWithRect:(CGRect)rect startIndex:(NSUInteger)startIndex {
-    // Lines
     NSMutableArray<GSCTLine *> *lines = [NSMutableArray array];
     NSUInteger lineLocation = startIndex;
     CGFloat lineRight = CGRectGetMaxX(rect);
@@ -238,29 +214,7 @@
         }
     }
     
-    // Frame infos
-    NSRange frameRange = NSMakeRange(startIndex, 0);
-    CGFloat frameWidth = 0;
-    CGFloat frameTop = 0;
-    CGFloat frameBottom = 0;
-    if (lines.count > 0) {
-        GSCTLine *last = lines.lastObject;
-        frameRange.length = NSMaxRange(last.range) - frameRange.location;
-        frameWidth = CGRectGetMaxX(rect) - CGRectGetMinX(last.usedRect);
-        frameTop = CGRectGetMinY(last.usedRect);
-        frameBottom = CGRectGetMaxY(last.usedRect);
-    }
-    for (GSCTLine *line in lines) {
-        frameTop = MIN(frameTop, CGRectGetMinY(line.usedRect));
-        frameBottom = MAX(frameBottom, CGRectGetMaxY(line.usedRect));
-    }
-    GSCTFrame *frame = [[GSCTFrame alloc] init];
-    frame.range = frameRange;
-    frame.lines = lines;
-    frame.rect = rect;
-    frame.usedRect = CGRectMake(CGRectGetMaxX(rect) - frameWidth, frameTop, frameWidth, frameBottom - frameTop);
-    frame.vertical = YES;
-    return frame;
+    return [_utils verticalFrameWithLines:lines rect:rect];
 }
 
 - (void)compressGlyphs:(NSArray<GSCTGlyph *> *)glyphs {
