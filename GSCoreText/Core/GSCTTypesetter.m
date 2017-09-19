@@ -351,7 +351,7 @@
                 }
                 break;
             case NSTextAlignmentJustified:
-                if (!reachEnd && adjustWidth > 0) {
+                if (!reachEnd) {
                     NSUInteger stretchCount = 0;
                     for (NSUInteger i = 1; i < glyphs.count; ++i) {
                         GSCTGlyph *prevGlyph = glyphs[i - 1];
