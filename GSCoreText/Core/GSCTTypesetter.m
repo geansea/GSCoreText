@@ -66,29 +66,45 @@
     if (!_ctTypesetter) {
         return nil;
     }
-    
-    if (_vertical) {
-        return [self createVerticalLineWithWidth:width startIndex:startIndex];
-    }
-    
-    // Glyphs
     CGFloat indent = 0;
     if (0 == startIndex || [_utils isNewline:[_layoutString.string characterAtIndex:(startIndex - 1)]]) {
         indent = _font.pointSize * _indent;
     }
+    if (_vertical) {
+        return [self createVerticalLineWithWidth:(width - indent) indent:indent startIndex:startIndex];
+    } else {
+        return [self createHorizontalLineWithWidth:(width - indent) indent:indent startIndex:startIndex];
+    }
+}
+
+- (GSCTFrame *)createFrameWithRect:(CGRect)rect startIndex:(NSUInteger)startIndex {
+    if (!_ctTypesetter) {
+        return nil;
+    }
+    if (_vertical) {
+        return [self createVerticalFrameWithRect:rect startIndex:startIndex];
+    } else {
+        return [self createHorizontalFrameWithRect:rect startIndex:startIndex];
+    }
+}
+
+#pragma mark - Private
+
+- (GSCTLine *)createHorizontalLineWithWidth:(CGFloat)width indent:(CGFloat)indent startIndex:(NSUInteger)startIndex {
+    // Glyphs
     CGFloat tryWidth = width * 1.3;
-    CFIndex length = CTTypesetterSuggestClusterBreak(_ctTypesetter, startIndex, tryWidth - indent);
+    CFIndex length = CTTypesetterSuggestClusterBreak(_ctTypesetter, startIndex, tryWidth);
     CTLineRef ctLine = CTTypesetterCreateLine(_ctTypesetter, CFRangeMake(startIndex, length));
     NSArray<GSCTGlyph *> *glyphs = [_utils glyphsFromCTLine:ctLine string:_layoutString.string vertical:NO];
     CFRelease(ctLine);
     
     [self compressGlyphs:glyphs];
     
-    NSUInteger breakPos = [self breakPosForGlyphs:glyphs withWidth:(width - indent)];
+    NSUInteger breakPos = [self breakPosForGlyphs:glyphs withWidth:width];
     glyphs = [glyphs subarrayWithRange:NSMakeRange(0, breakPos)];
     
     [self adjustEndGlyphs:glyphs];
-    CGPoint lineOrigin = [self adjustGlyphs:glyphs withWidth:(width - indent) indent:indent];
+    CGPoint lineOrigin = [self adjustGlyphs:glyphs withWidth:width indent:indent];
     
     // Line infos
     NSRange lineRange = NSMakeRange(startIndex, 0);
@@ -117,53 +133,14 @@
     return line;
 }
 
-- (GSCTFrame *)createFrameWithRect:(CGRect)rect startIndex:(NSUInteger)startIndex {
-    if (!_ctTypesetter) {
-        return nil;
-    }
-    
-    if (_vertical) {
-        return [self createVerticalFrameWithRect:rect startIndex:startIndex];
-    }
-    
-    NSMutableArray<GSCTLine *> *lines = [NSMutableArray array];
-    NSUInteger lineLocation = startIndex;
-    CGFloat lineTop = CGRectGetMinY(rect);
-    while (lineLocation < _layoutString.length) {
-        GSCTLine *line = [self createLineWithWidth:CGRectGetWidth(rect) startIndex:lineLocation];
-        line.x += CGRectGetMinX(rect);
-        line.y += lineTop + line.ascent;
-        lineTop = line.y + line.descent;
-        if (lineTop > CGRectGetMaxY(rect)) {
-            break;
-        }
-        
-        [lines addObject:line];
-        
-        lineLocation = NSMaxRange(line.range);
-        lineTop += _font.pointSize * _lineSpacing;
-        if ([_utils isNewline:line.glyphs.lastObject.utf16Code]) {
-            lineTop += _font.pointSize * _paragraphSpacing;
-        }
-    }
-    
-    return [_utils horizontalFrameWithLines:lines rect:rect];
-}
-
-#pragma mark - Private
-
-- (GSCTLine *)createVerticalLineWithWidth:(CGFloat)width startIndex:(NSUInteger)startIndex {
+- (GSCTLine *)createVerticalLineWithWidth:(CGFloat)width indent:(CGFloat)indent startIndex:(NSUInteger)startIndex {
     // Glyphs
-    CGFloat indent = 0;
-    if (0 == startIndex || [_utils isNewline:[_layoutString.string characterAtIndex:(startIndex - 1)]]) {
-        indent = _font.pointSize * _indent;
-    }
-    CFIndex length = CTTypesetterSuggestLineBreak(_ctTypesetter, startIndex, width - indent);
+    CFIndex length = CTTypesetterSuggestLineBreak(_ctTypesetter, startIndex, width);
     CTLineRef ctLine = CTTypesetterCreateLine(_ctTypesetter, CFRangeMake(startIndex, length));
     NSArray<GSCTGlyph *> *glyphs = [_utils glyphsFromCTLine:ctLine string:_layoutString.string vertical:YES];
     CFRelease(ctLine);
     
-    CGPoint lineOrigin = [self adjustGlyphs:glyphs withWidth:(width - indent) indent:indent];
+    CGPoint lineOrigin = [self adjustGlyphs:glyphs withWidth:width indent:indent];
     
     // Line infos
     NSRange lineRange = NSMakeRange(startIndex, 0);
@@ -192,28 +169,47 @@
     return line;
 }
 
+- (GSCTFrame *)createHorizontalFrameWithRect:(CGRect)rect startIndex:(NSUInteger)startIndex {
+    NSMutableArray<GSCTLine *> *lines = [NSMutableArray array];
+    NSUInteger lineLocation = startIndex;
+    CGFloat lineTop = CGRectGetMinY(rect);
+    while (lineLocation < _layoutString.length) {
+        GSCTLine *line = [self createLineWithWidth:CGRectGetWidth(rect) startIndex:lineLocation];
+        line.x += CGRectGetMinX(rect);
+        line.y += lineTop + line.ascent;
+        lineTop = line.y + line.descent;
+        if (lineTop > CGRectGetMaxY(rect)) {
+            break;
+        }
+        [lines addObject:line];
+        lineLocation = NSMaxRange(line.range);
+        lineTop += _font.pointSize * _lineSpacing;
+        if ([_utils isNewline:line.glyphs.lastObject.utf16Code]) {
+            lineTop += _font.pointSize * _paragraphSpacing;
+        }
+    }
+    return [_utils horizontalFrameWithLines:lines rect:rect];
+}
+
 - (GSCTFrame *)createVerticalFrameWithRect:(CGRect)rect startIndex:(NSUInteger)startIndex {
     NSMutableArray<GSCTLine *> *lines = [NSMutableArray array];
     NSUInteger lineLocation = startIndex;
     CGFloat lineRight = CGRectGetMaxX(rect);
     while (lineLocation < _layoutString.length) {
-        GSCTLine *line = [self createVerticalLineWithWidth:CGRectGetHeight(rect) startIndex:lineLocation];
+        GSCTLine *line = [self createLineWithWidth:CGRectGetHeight(rect) startIndex:lineLocation];
         line.x += lineRight - line.ascent;
         line.y += CGRectGetMinY(rect);
         lineRight = line.x - line.descent;
         if (lineRight < CGRectGetMinX(rect)) {
             break;
         }
-        
         [lines addObject:line];
-        
         lineLocation = NSMaxRange(line.range);
         lineRight -= _font.pointSize * _lineSpacing;
         if ([_utils isNewline:line.glyphs.lastObject.utf16Code]) {
             lineRight -= _font.pointSize * _paragraphSpacing;
         }
     }
-    
     return [_utils verticalFrameWithLines:lines rect:rect];
 }
 
