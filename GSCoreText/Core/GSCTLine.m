@@ -40,7 +40,7 @@
         CGContextSetFillColorWithColor(context, color.CGColor);
         CTFontRef ctFont = (__bridge CTFontRef)glyph.font;
         CGGlyph cgGlyph = glyph.glyph;
-        CGContextSetTextPosition(context, floor(_x + glyph.x), floor(_y + glyph.y));
+        CGContextSetTextPosition(context, round(_x + glyph.x), round(_y + glyph.y));
         CTFontDrawGlyphs(ctFont, &cgGlyph, &CGPointZero, 1, context);
     }
 }
